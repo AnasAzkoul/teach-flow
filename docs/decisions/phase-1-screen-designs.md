@@ -151,6 +151,6 @@ Deferred on purpose, to revisit later:
 - ~~**Members settings page**~~ (agreed only "for now"): replaced in `levels-of-access.md`, which adds a Teams tab and read-only access for teachers.
 - ~~**Home priority for senior teachers**~~: resolved in `levels-of-access.md` as the **Needs a substitute** strip at the top of Home.
 - **Team week view** for senior teachers and admins: not in Phase 1 (availability in the pickers covers the need). My week stays personal.
-- **Cross-workspace reads for Home and the personal-library toggle** (open): ADR 0003 (as amended by 0006) allows only My week and availability to read across workspaces. Home's Today, To do and Coming up (plan and report status, class-hours items, follow-ups) and the picker's "Your personal library" toggle also need such a read. ADR 0003 needs an amendment before these are built.
+- ~~**Cross-workspace reads for Home and the personal-library toggle**~~: resolved by ADR 0008, which allows both as narrow, read-only reads of the user's own data only.
 - **Per-student hour packages** (students who join mid-way, whether absences use up hours, pricing): later billing phase. Phase 1 keeps hours on the class.
 - **"Course"** as a school catalogue or product above classes: the word is kept for that.

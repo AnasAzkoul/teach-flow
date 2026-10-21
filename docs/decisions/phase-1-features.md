@@ -74,13 +74,13 @@ Source context: the original project handoff (problem, lesson chain, workspaces,
 
 ## Search
 
-- Scope: current workspace only (follows the switcher).
+- Scope: current workspace only (follows the switcher). This still holds; only Home, My week, availability and the personal-library tab in the plan picker read across workspaces.
 - Finds: students, classes, lesson plans / activities / materials (title and tags), lesson report text, assessments by student.
 - Not in Phase 1: searching inside files (needs background processing; Phase 2 alongside the job queue).
 
 ## Home screen
 
-- Follows the current workspace. Three blocks:
+- Originally decided to follow the current workspace; superseded: Home now shows the teacher's own to-dos from all their workspaces (see `phase-1-screen-designs.md` and ADR 0008). Three blocks:
   1. **Today**: the teacher's lessons with place/link and whether a plan is attached.
   2. **To do**: lessons with no report, upcoming lessons with no plan, homework to check.
   3. **Coming up**: short preview linking to My week.
