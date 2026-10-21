@@ -1,6 +1,6 @@
 # Phase 1 screen designs: decisions
 
-Outcome of the Phase 1 screen-design grilling session (18–19 Oct 2026). Terms follow `GLOSSARY.md`. This file covers layouts and screen behaviour; who-can-do-what is settled in the later levels-of-access session, which wins where the two differ.
+Outcome of the Phase 1 screen-design grilling session (18–19 Oct 2026). Terms follow `GLOSSARY.md`. This file covers layouts and screen behaviour. Who-can-do-what is settled in `levels-of-access.md` (19 Oct 2026), which added the **senior teacher** role, **teams**, plan and report notes, substitute requests and renewal recommendations. This file has been updated to match it, and it remains the source for permissions.
 
 New glossary terms from this session: **Follow-up**, **Overdue report**, **Clash**, **Class level**, **Class hours**, **Hours taught / Hours left**, **Class ending soon**. Updated entries: **Library copy** (remembers its source), **Homework** (done / partly done / not done).
 
@@ -29,14 +29,21 @@ Three personal blocks, for the lessons the user teaches (as assigned teacher or 
 - **Coming up**: the next 7 days after today, grouped by day, with a workspace colour dot and a "no plan" flag on each lesson. No cap on items. Ends with a link to My week.
 - **Pending invites**: a banner above Home (and in the workspace switcher).
 
-**Admin blocks**: one group per school workspace the user runs, placed below the personal blocks, shown only to that workspace's admins and super-admins:
+**Needs a substitute strip**: a red strip at the very top of a senior teacher's Home (their team) and an admin's Home (whole school), above their own Today. It lists lessons in the next 48 hours that have no teacher or an open substitute request, with one-tap **Approve** or **Choose**. Later requests stay in the blocks below.
 
-- Lessons without a teacher
-- Cancelled this week (counted by who cancelled)
-- Pending invites (flagging ones about to expire)
-- Classes ending soon
+**Team and school blocks**: one group per school workspace where the user leads a team or runs the school, placed below the personal blocks. Senior teachers see them for **their team's classes**; admins and super-admins see them for the **whole school**.
 
-A user who teaches nothing in a workspace sees an empty Today ("No lessons today") and only that workspace's admin blocks. Admins never see other teachers' lessons as Today cards.
+| Block | Senior teacher | Admin / super-admin |
+|---|---|---|
+| Reports overdue, with **Send reminder** | team | school |
+| Substitute requests (approve the suggested teacher or pick another) | team | school (and teachers in no team) |
+| Lessons without a teacher | team | school |
+| Classes ending soon, with renewal recommendations | team (view and discuss) | school (resolve with Add hours / Won't renew) |
+| Cancelled this week (counted by who cancelled) | – | school |
+| Pending invites (flagging ones about to expire) | – | school |
+
+- **Send reminder** emails the teacher and adds "Reminded by X" to that item in the teacher's To do, at most once a day per report. Still no notification centre.
+- A user who teaches nothing in a workspace sees an empty Today ("No lessons today") and only that workspace's blocks. Nobody sees other teachers' lessons as Today cards.
 
 ## My week
 
@@ -78,7 +85,9 @@ A user who teaches nothing in a workspace sees an empty Today ("No lessons today
     - **Homework check** on last lesson's homework: done, partly done or not done. Only for participants who were in the lesson where it was set.
     - **Participant note**, with a "+ Follow-up" link.
   - **Save draft** and **Mark done** buttons.
-- An overdue report shows only in the teacher's own To do (see parking lot).
+- **Plan notes and report notes**: a senior teacher (for their team) or an admin can leave a note on the plan copy (or one of its stages) or on the lesson report. The teacher replies and marks it resolved. Only the lesson's teacher, their senior teacher and admins see these notes. Senior teachers don't edit plan copies or reports; admins can still edit reports.
+- **Substitute request**: the lesson's teacher can request a substitute for the lesson and suggest a teacher. It goes to the "Substitute requests" block of their senior teacher, or of admins for a teacher in no team.
+- An overdue report shows in the teacher's own To do, and in the "Reports overdue" block for their senior teacher and admins.
 
 ## Student portfolio
 
@@ -99,7 +108,8 @@ A user who teaches nothing in a workspace sees an empty Today ("No lessons today
 - **Tabs:**
   - **Lessons** (opens first): next lessons with plan status, then past lessons with attendance and report status. Cancelled lessons are greyed out.
   - **Students**: current members with their own levels, linked to their portfolios. Past members sit in a collapsed list.
-  - **Timetable**: the current pattern, "Change from date…", and timetable history.
+  - **Timetable**: the current pattern, "Change from date…", and timetable history. Admins, super-admins and senior teachers with Can manage classes change it directly; the assigned teachers get a To do item and an email ("Changed by Sara"). An assigned teacher instead sends a **timetable change request**, which a senior teacher with the grant (otherwise an admin) approves or declines.
+- **Teacher pickers** (assigned teacher, substitute, timetable change) show each teacher's **availability** across all their workspaces, as free or busy only (ADR 0006). They check the exact slots over the class's whole expected run and show partial availability ("free from 24 Nov", "busy 2 of 28 lessons").
   - **Goal**: the class goal that new members start with.
 
 ### Class level and class hours
@@ -110,7 +120,8 @@ A user who teaches nothing in a workspace sees an empty Today ("No lessons today
 - The timetable never creates lessons beyond the class hours.
 - **Class ending soon** starts when 25% or less of the class hours are left:
   - **Assigned teachers** get To do items at 25%, 12.5% and 2 h left (10 h, 5 h and 2 h for a 40 h class). Each one replaces the previous one. They only inform; the teacher has nothing to resolve.
-  - **Admins** see the class in the "Classes ending soon" block from 25% left until an admin resolves it, either with **Add hours** (resolves automatically) or **Won't renew** with a reason: finishing, taking the exam, moving to another class, or other plus a note.
+  - The assigned teacher writes a **renewal recommendation** (one per class): needs more hours, with reasons, or ready to finish (e.g. ready for the exam, goal reached). In a group class the reasons can name students. The senior teacher (or an admin, for a teacher in no team) can discuss it in replies until they agree.
+  - **Admins** see the class in the "Classes ending soon" block from 25% left, with the renewal recommendation next to the actions, until an admin resolves it, either with **Add hours** (resolves automatically) or **Won't renew** with a reason: finishing, taking the exam, moving to another class, or other plus a note. Only admins resolve it; senior teachers see their team's classes there to view and discuss.
 - Naming: a class is always "class", never "course". The word "course" is kept free for a possible school catalogue later.
 
 ## Workspace switcher
@@ -119,11 +130,16 @@ A user who teaches nothing in a workspace sees an empty Today ("No lessons today
 - **Pending invites** appear here with **Accept / Decline**. Accepting switches the user into that workspace.
 - **Create school workspace** at the bottom. Anyone can create one and becomes its first super-admin. Billing comes later.
 
-## Members settings (school workspaces only; agreed "for now")
+## Members settings (school workspaces only)
 
-- **Tabs:** Members · Invites · Former members · Audit history.
-- **Member rows:** name, role, assigned classes, and a **Can set levels** tick box (teachers only; super-admins and admins always can).
-- **The ⋯ menu** shows only the actions the viewer's role allows (change role, remove). Removing someone asks for confirmation and states what stays behind ("their 140 lessons and reports stay, credited to them").
+Final version from `levels-of-access.md`, which replaces the "agreed for now" draft from this session.
+
+- **Tabs:** Members · **Teams** · Invites · Former members · Audit history.
+- **Member rows:** name, role, team, assigned classes, grants (**Can set levels**, **Can manage classes**).
+- **The ⋯ menu** shows only the actions the viewer's role allows (change role, remove, grants). A senior teacher's ⋯ on their own team's teachers offers only Can set levels. Removing someone asks for confirmation and states what stays behind ("their 140 lessons and reports stay, credited to them").
+- **Who sees what:**
+  - Teachers and senior teachers can open Members and Teams read-only.
+  - Invites, Former members and Audit history are for admins and super-admins only.
 - **Invites:** email, role, expiry, Resend / Revoke.
 - Personal workspaces have no Members page.
 
@@ -131,7 +147,10 @@ A user who teaches nothing in a workspace sees an empty Today ("No lessons today
 
 Deferred on purpose, to revisit later:
 
-- **Admin view of overdue reports, with "Send reminder" to the teacher.** Deferred until levels of access are settled. The earlier draft was a "Reports overdue" admin block whose reminder became an email plus a "reminded by X" tag on the teacher's To do.
-- **Members settings page**: agreed only "for now". Revisit together with levels of access.
+- ~~**Admin view of overdue reports, with "Send reminder" to the teacher.**~~ Resolved in `levels-of-access.md`: senior teachers (for their team) and admins (whole school) see a "Reports overdue" block, and Send reminder emails the teacher and tags their To do item.
+- ~~**Members settings page**~~ (agreed only "for now"): replaced in `levels-of-access.md`, which adds a Teams tab and read-only access for teachers.
+- ~~**Home priority for senior teachers**~~: resolved in `levels-of-access.md` as the **Needs a substitute** strip at the top of Home.
+- **Team week view** for senior teachers and admins: not in Phase 1 (availability in the pickers covers the need). My week stays personal.
+- **Cross-workspace reads for Home and the personal-library toggle** (open): ADR 0003 (as amended by 0006) allows only My week and availability to read across workspaces. Home's Today, To do and Coming up (plan and report status, class-hours items, follow-ups) and the picker's "Your personal library" toggle also need such a read. ADR 0003 needs an amendment before these are built.
 - **Per-student hour packages** (students who join mid-way, whether absences use up hours, pricing): later billing phase. Phase 1 keeps hours on the class.
 - **"Course"** as a school catalogue or product above classes: the word is kept for that.

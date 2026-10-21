@@ -15,7 +15,7 @@ This is deliberate redundancy. The cost is a transaction per request and a polic
 
 ## Consequences
 
-- **My week**, the one view that crosses workspaces, reads through a single narrow, read-only database function that returns only lesson basics for lessons the user teaches. No other code path may read across workspaces.
+- **My week**, the one view that crosses workspaces, reads through a single narrow, read-only database function that returns only lesson basics for lessons the user teaches. No other code path may read across workspaces, except availability (busy or free only; see ADR 0006).
 - Background jobs set `app.workspace_id` the same way as requests.
 - A request for a record in another workspace answers 404 (never 403), so its existence isn't revealed.
 - An automated tenant-isolation test must pass for every endpoint.

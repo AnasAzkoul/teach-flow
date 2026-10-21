@@ -68,7 +68,7 @@ The state of a class with 25% or less of its class hours left. Its assigned teac
 _Avoid_: Expiring, running out
 
 **Renewal recommendation**:
-An assigned teacher's opinion, given when their class is ending soon, on whether it needs more hours (and why) or is ready to finish (e.g. ready for the exam, goal reached). Their senior teacher (or an admin, for a teacher in no team) can discuss it with them in replies until they agree. Admins see it when deciding to add hours or record that the class won't renew.
+An assigned teacher's opinion, given when their class is ending soon, on whether it needs more hours (and why) or is ready to finish (e.g. ready for the exam, goal reached). Their senior teacher (or an admin, for a teacher in no team) can discuss it with them in replies until they agree. Admins see it when deciding to add hours or record that the class won't renew. Its reason is for staff only and never reaches the student.
 _Avoid_: Renewal note, sales note
 
 **Hours taught**:
@@ -231,9 +231,17 @@ _Avoid_: Combined calendar, agenda
 Two of a teacher's lessons that overlap in time, or two in-person lessons at different places less than 30 minutes apart. Flagged in My week across all the teacher's workspaces.
 _Avoid_: Conflict, double-booking
 
+**Availability**:
+Whether a teacher is free at a given time across all their workspaces, judged by the same rule as a clash (including the 30-minute gap between in-person lessons at different places) and, for a new or changed timetable, over the class's whole expected run. A workspace sees only "free" or "busy" for times outside its own lessons, never why, and cannot give a teacher a lesson at a busy time.
+_Avoid_: Free/busy, schedule
+
 **Timetable**:
-A class's repeating weekly pattern of lesson times (e.g. Mon & Wed 18:00–19:30), from which lessons are created a few weeks ahead. A timetable change takes effect from a chosen date and moves the future lessons, keeping their plan copies; a class keeps a history of its timetables.
+A class's repeating weekly pattern of lesson times (e.g. Mon & Wed 18:00–19:30), from which lessons are created a few weeks ahead. A timetable change takes effect from a chosen date and moves the future lessons, keeping their plan copies; a class keeps a history of its timetables. Admins, and senior teachers allowed to manage the class, change it directly and the assigned teachers are told; an assigned teacher proposes changes through a timetable change request.
 _Avoid_: Schedule, recurrence, calendar
+
+**Timetable change request**:
+An assigned teacher's proposal of a new timetable for their class from a chosen date. A senior teacher allowed to manage the team's classes, or otherwise an admin, approves or declines it.
+_Avoid_: Reschedule request, timetable proposal
 
 **Participant**:
 A student recorded on a specific lesson. Until the lesson takes place, participants follow the class's current members; once it takes place, they are locked and stay fixed even when the class's membership later changes. A guest may be added to a single lesson.

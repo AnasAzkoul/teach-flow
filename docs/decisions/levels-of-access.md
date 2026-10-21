@@ -1,8 +1,8 @@
 # Levels of access: decisions
 
-Outcome of the levels-of-access grilling session (19 Oct 2026). Terms follow `GLOSSARY.md`. This refines the role rules in `phase-1-features.md` and the "agreed for now" Members settings page from the screen-design session; where they differ, this file and the glossary win.
+Outcome of the levels-of-access grilling session (19 Oct 2026) and its follow-up on the parked items (20–21 Oct 2026). Terms follow `GLOSSARY.md`. This refines the role rules in `phase-1-features.md` and the "agreed for now" Members settings page from the screen-design session; where they differ, this file and the glossary win.
 
-New glossary terms: **Senior teacher**, **Team**, **Plan note**, **Report note**, **Substitute request**, **Renewal recommendation**. Updated: Member, Teacher (role), Level, Invite, Overdue report.
+New glossary terms: **Senior teacher**, **Team**, **Plan note**, **Report note**, **Substitute request**, **Renewal recommendation**, and from the follow-up **Timetable change request** and **Availability**. Updated: Member, Teacher (role), Level, Invite, Overdue report.
 
 ## Shape
 
@@ -59,7 +59,7 @@ Replaces the "agreed for now" version.
 
 ## Permission matrix (school workspace)
 
-✓ can · view = read only · – can't · "own" = assigned classes or lessons taught · "team" = the team's classes · ★ = needs a grant · (assumed) = not discussed; confirmed as part of the whole matrix.
+✓ can · view = read only · – can't · "own" = assigned classes or lessons taught · "team" = the team's classes · ★ = needs a grant.
 
 | Screen / action | Teacher | Senior teacher | Admin | Super-admin |
 |---|---|---|---|---|
@@ -70,11 +70,12 @@ Replaces the "agreed for now" version.
 | Pending invites block | – | – | ✓ | ✓ |
 | **My week** | | | | |
 | Own lessons across workspaces | ✓ | ✓ | ✓ | ✓ |
-| Team or school calendar (assumed) | – | – | – | – |
+| Team or school calendar (Phase 1: none; pickers show availability) | – | – | – | – |
 | **Classes** | | | | |
 | See class, its lessons and students | own | team | all | all |
 | Create class, choose assigned teachers, archive | – | team ★ | all | all |
-| Change timetable (assumed) | – | team ★ | all | all |
+| Change timetable directly (assigned teachers are told) | – | team ★ | all | all |
+| Timetable change request | raise | decide (team ★) | decide | decide |
 | Add hours / record won't renew | – | – | ✓ | ✓ |
 | Renewal recommendation | write | discuss | view, discuss | view, discuss |
 | **Lesson** | | | | |
@@ -102,11 +103,23 @@ Replaces the "agreed for now" version.
 | Remove or demote admins; appoint super-admins | – | – | – | ✓ |
 | Billing, delete workspace | – | – | – | ✓ |
 
+## Follow-up decisions (20–21 Oct 2026)
+
+- **Timetable changes**: admins, super-admins and senior teachers with Can manage classes change a timetable directly (e.g. a parent phones the school). The assigned teachers get a To do item and an email ("Changed by Sara"). An assigned teacher proposes a change through a **timetable change request**, which a senior teacher with the grant (otherwise an admin) approves or declines.
+- **Availability**: every picker that gives a teacher lessons (assigned teacher, substitute, timetable change) checks the teacher's **availability** in all their workspaces, using the same rule as a clash, including the 30-minute gap between in-person lessons at different places. It checks the exact time slots over the class's whole expected run (class hours ÷ weekly hours), not only lessons already created. Outside its own lessons, a school sees only free or busy, never why (ADR 0006). The picker shows partial availability ("free from 24 Nov", "busy 2 of 28 lessons"). If a partly busy teacher is chosen, the clashing lessons start without a teacher and go through the substitute flow.
+- **Home priority**: a red **Needs a substitute** strip at the very top of a senior teacher's Home (team) and an admin's Home (school), above their own Today. It covers lessons in the next 48 hours with no teacher or an open substitute request, with one-tap Approve or Choose. Later requests stay in the team blocks.
+- **No team or school calendar in Phase 1**: availability in the pickers covers the need. A team week view stays parked.
+- **Decision records**: ADR 0006 (availability crosses workspaces as busy/free only; amends 0003) and ADR 0007 (fixed roles and teams; custom roles later).
+
+### Shaped now, built later
+
+- **Sales role**: sits beside the ladder, not on it. It sees classes ending soon, hours left, renewal recommendations, and the student's contact details, level and goal. It adds hours or records won't renew. It doesn't see lessons, reports, notes or the library. In a school without one, admins do this. The name isn't settled yet. Billing phase.
+- **Renewal recommendations follow the hours**: one per class while hours live on the class; one per student once per-student hour packages arrive.
+- **Automated renewal email**: a school setting, off by default. A renewal recommendation has a staff-only **reason** and an optional **message for the student**. The email quotes only that message, only after the senior teacher agrees (or for a teacher in no team), and goes to the parent for a child. It includes hours left and a link to buy more hours. This needs student contact details, guardians and payments: billing phase.
+- **Custom roles**: a school creates one by choosing a fixed role to base it on, renaming it, and switching permission matrix rows on or off. It can go up to admin level, never further; super-admin-only rows are locked. The fixed roles stay as presets (ADR 0007).
+
 ## Parked for later
 
-- **School-defined custom roles**: a school names its own roles and picks their permissions, alongside the fixed ones.
-- **Home priority for senior teachers**: substitute requests and lessons without a teacher should rank high on a senior teacher's Home so they can act early (screen-layout follow-up).
-- **Salesperson role**: acts on classes ending soon using teachers' renewal recommendations when calling the student. Optional; a school may have no salespeople.
-- **Automated renewal email and online payment**: a school can choose to email the student when a class is ending soon (hours left plus the renewal recommendation) with a link to buy more hours. Billing phase; students have no login today.
-- **Team or school calendar** for senior teachers and admins.
-- **Per-student renewal recommendations**, together with the already-parked per-student hour packages.
+- **On-call teacher**: many schools keep a teacher on call to cover for missing teachers. Admins would see who's on call and make them the substitute in one step, or ask others.
+- **Team week view** for senior teachers and admins (rows per teacher, this school's lessons only), as a planning tool.
+- Build of the shaped items above: sales role, per-student renewal recommendations (with per-student hour packages), automated renewal email and online payment, custom roles.
