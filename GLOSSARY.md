@@ -227,6 +227,10 @@ _Avoid_: Deleted lesson, no-show
 A teacher's personal view of every lesson they teach across all their workspaces, showing only lesson basics (time, class, workspace, place), colour-coded by workspace, with clashes highlighted.
 _Avoid_: Combined calendar, agenda
 
+**Workspace colour**:
+The colour a teacher gives one of their workspaces, picked from 8 fixed colours, used to tell their workspaces apart in My week, Coming up and the workspace switcher. It belongs to the teacher, not the workspace: two teachers can see the same school in different colours. Each new workspace gets the next colour the teacher isn't using yet, and the teacher can change it.
+_Avoid_: School colour, brand colour, theme
+
 **Clash**:
 Two of a teacher's lessons that overlap in time, or two in-person lessons at different places less than 30 minutes apart. Flagged in My week across all the teacher's workspaces.
 _Avoid_: Conflict, double-booking
