@@ -1,0 +1,8 @@
+{
+  "name": "teach-flow",
+  "private": true,
+  "scripts": {
+    "prototype:visual": "pnpm --filter @teach-flow/web dev",
+    "prototype:contrast": "node apps/web/app/prototype-visual/contrast-cli.ts"
+  }
+}
