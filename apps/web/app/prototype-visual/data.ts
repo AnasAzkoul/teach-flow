@@ -125,6 +125,7 @@ export interface WeekLesson {
   place: string
   cancelled?: boolean
   clash?: boolean
+  noPlan?: boolean // shown only on lessons still to come
 }
 
 const t = (h: number, m = 0) => h * 60 + m
@@ -141,11 +142,11 @@ export const weekLessons: WeekLesson[] = [
   { id: 'w9', day: 2, start: t(18), end: t(19, 30), klass: 'Adults B1', ws: 'bright', place: 'Room 1', clash: true },
   { id: 'w10', day: 3, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4' },
   { id: 'w11', day: 3, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online' },
-  { id: 'w12', day: 3, start: t(18), end: t(19, 30), klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2' },
-  { id: 'w13', day: 4, start: t(9), end: t(10), klass: 'Business English', ws: 'bright', place: 'Client office' },
+  { id: 'w12', day: 3, start: t(18), end: t(19, 30), klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2', noPlan: true },
+  { id: 'w13', day: 4, start: t(9), end: t(10), klass: 'Business English', ws: 'bright', place: 'Client office', noPlan: true },
   { id: 'w14', day: 4, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online' },
-  { id: 'w15', day: 4, start: t(14), end: t(15, 30), klass: 'Business German', ws: 'riverside', place: 'Riverside · Room B' },
-  { id: 'w16', day: 5, start: t(10), end: t(11), klass: 'Leila S. · 1:1', ws: 'personal', place: 'Online' },
+  { id: 'w15', day: 4, start: t(14), end: t(15, 30), klass: 'Business German', ws: 'riverside', place: 'Riverside · Room B', noPlan: true },
+  { id: 'w16', day: 5, start: t(10), end: t(11), klass: 'Leila S. · 1:1', ws: 'personal', place: 'Online', noPlan: true },
 ]
 
 export const fmt = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { ChevronLeft, ChevronRight, TriangleAlert, CalendarX, MapPin } from '@lucide/vue'
+import { ChevronLeft, ChevronRight, TriangleAlert, CalendarX, MapPin, Clock } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
 import AppShell from './AppShell.vue'
 import WsDot from './WsDot.vue'
@@ -20,6 +20,9 @@ function lane(l: WeekLesson) {
   const pair = weekLessons.filter((o) => o.clash && o.day === l.day).sort((a, b) => a.start - b.start)
   return pair[0]!.id === l.id ? { left: '2px', right: '50%' } : { left: '50%', right: '2px' }
 }
+
+// "No plan" mark: a clock in the workspace text colour, no fill; only on lessons still to come.
+const noPlan = (l: WeekLesson) => l.noPlan && !l.cancelled && (l.day > now.dayIndex || (l.day === now.dayIndex && l.start > now.minutes))
 
 const selectedDay = ref(now.dayIndex)
 const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDay.value).sort((a, b) => a.start - b.start))
@@ -74,7 +77,10 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
                 ]"
                 :style="{ top: `${top(l.start) + 1}px`, height: `${top(l.end) - top(l.start) - 2}px`, ...lane(l) }"
               >
-                <span class="tnum font-medium" :class="l.cancelled && 'line-through'">{{ fmt(l.start) }}–{{ fmt(l.end) }}</span>
+                <span class="flex items-center gap-1">
+                  <span class="tnum font-medium" :class="l.cancelled && 'line-through'">{{ fmt(l.start) }}–{{ fmt(l.end) }}</span>
+                  <Clock v-if="noPlan(l)" class="ml-auto size-3.5 shrink-0 stroke-[1.75]" role="img" aria-label="No plan" />
+                </span>
                 <span class="truncate text-[13px] font-semibold leading-[18px]" :class="l.cancelled && 'line-through'">{{ l.klass }}</span>
                 <span v-if="l.cancelled" class="flex items-center gap-1 font-medium"><CalendarX class="size-3.5 stroke-[1.5]" />Cancelled · {{ ws(l.ws).name }}</span>
                 <span v-else class="truncate">{{ ws(l.ws).name }} · {{ l.place }}</span>
@@ -113,6 +119,7 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
                   <span class="flex items-center gap-1 text-sm"><MapPin class="size-3.5 stroke-[1.5]" />{{ ws(l.ws).name }} · {{ l.place }}</span>
                   <span v-if="l.clash" class="flex items-center gap-1 text-sm font-semibold text-danger"><TriangleAlert class="size-4 stroke-[1.75]" />Clash with another lesson</span>
                   <span v-if="l.cancelled" class="flex items-center gap-1 text-sm font-medium"><CalendarX class="size-4 stroke-[1.5]" />Cancelled by student</span>
+                  <span v-if="noPlan(l)" class="flex items-center gap-1 text-sm"><Clock class="size-4 stroke-[1.5]" />No plan</span>
                 </span>
               </a>
             </li>
