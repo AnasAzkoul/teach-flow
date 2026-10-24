@@ -8,11 +8,11 @@ import { Check } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
 import WsDot from './WsDot.vue'
 import { ws } from '~/prototype-visual/data'
-import { TYPES, toneText, type TodoItem } from '~/prototype-visual/todo'
+import { TYPES, toneText, rowTone, type TodoItem } from '~/prototype-visual/todo'
 
 const props = defineProps<{ item: TodoItem }>()
 const t = computed(() => TYPES[props.item.type])
-const tone = computed(() => toneText[t.value.tone])
+const tone = computed(() => toneText[rowTone(props.item)])
 const live = computed(() => props.item.actions.filter((a) => !a.done))
 const done = computed(() => props.item.actions.find((a) => a.done))
 const followUp = computed(() => props.item.type === 'follow-up')

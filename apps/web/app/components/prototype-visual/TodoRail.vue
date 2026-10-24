@@ -6,10 +6,10 @@ import { computed } from 'vue'
 import { Plus, X } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
 import TodoRow from './TodoRow.vue'
-import { todoItems, applyFilter, countBy, isFiltered, NO_FILTER, TYPES, TYPE_ORDER, URGENCY, URGENCY_ORDER, type TodoFilter } from '~/prototype-visual/todo'
+import { todoItems, applyFilter, countBy, isFiltered, isNudge, NO_FILTER, TYPES, TYPE_ORDER, URGENCY, URGENCY_ORDER, type TodoFilter } from '~/prototype-visual/todo'
 
 const filter = defineModel<TodoFilter>('filter', { required: true })
-const shown = computed(() => applyFilter(todoItems, filter.value))
+const shown = computed(() => applyFilter(todoItems, filter.value).sort((a, b) => Number(isNudge(a)) - Number(isNudge(b))))
 const groups = computed(() => URGENCY_ORDER.map((u) => ({ u, items: shown.value.filter((i) => i.urgency === u) })).filter((g) => g.items.length))
 const byUrgency = computed(() => countBy(applyFilter(todoItems, { ...filter.value, urgency: 'all' }), (i) => i.urgency))
 const byType = computed(() => countBy(applyFilter(todoItems, { ...filter.value, type: 'all' }), (i) => i.type))

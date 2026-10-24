@@ -40,14 +40,19 @@ export const URGENCY_ORDER: Urgency[] = ['now', 'soon', 'later']
 
 export const toneText = { danger: 'text-danger', warning: 'text-warning', muted: 'text-muted' } as const
 
+// A team item where your only job is to nudge someone (Send reminder, Discuss) or it's already done:
+// grey, never "Needs action now". Red is for what you must decide or do yourself.
+export const isNudge = (i: TodoItem) => i.scope === 'team' && !i.actions.some((a) => a.primary)
+export const rowTone = (i: TodoItem) => (isNudge(i) ? 'muted' : TYPES[i.type].tone)
+
 export const todoItems: TodoItem[] = [
   { id: 's1', type: 'substitute', urgency: 'now', scope: 'team', title: 'Teens B1', when: '10:00–11:30', detail: 'Daniel R. can’t teach · suggests Lina M.', ws: 'bright', meta: 'Tomorrow', actions: [{ label: 'Approve Lina', primary: true }, { label: 'Choose teacher' }] },
   { id: 's2', type: 'substitute', urgency: 'now', scope: 'team', title: 'Kids A1 Saturday', when: '09:30–11:00', detail: 'No teacher', ws: 'bright', meta: 'Sat 24 Oct', actions: [{ label: 'Choose teacher', primary: true }] },
   { id: 'o0', type: 'overdue', urgency: 'now', scope: 'mine', title: 'Teens B1+', when: 'Tue 20 Oct, 16:00', detail: 'Your report · reminded by Noura S. today', ws: 'bright', meta: '1 day overdue', actions: [{ label: 'Finish report', primary: true }] },
-  { id: 'o1', type: 'overdue', urgency: 'now', scope: 'team', title: 'Teens B1', when: 'Mon 19 Oct, 16:00', detail: 'Daniel R.', ws: 'bright', meta: '2 days overdue', actions: [{ label: 'Send reminder' }] },
-  { id: 'o2', type: 'overdue', urgency: 'now', scope: 'team', title: 'Adults B1', when: 'Tue 20 Oct, 18:00', detail: 'Lina M.', ws: 'bright', meta: '1 day overdue', actions: [{ label: 'Reminded today', done: true }] },
-  { id: 'o3', type: 'overdue', urgency: 'now', scope: 'team', title: 'IELTS Writing', when: 'Tue 20 Oct, 10:00', detail: 'Jonas P.', ws: 'bright', meta: '1 day overdue', actions: [{ label: 'Send reminder' }] },
-  { id: 'p1', type: 'no-plan', urgency: 'soon', scope: 'mine', title: 'Business English', when: '09:00', detail: '', ws: 'bright', meta: 'Tomorrow', actions: [{ label: 'Attach plan', primary: true }] },
+  { id: 'o1', type: 'overdue', urgency: 'soon', scope: 'team', title: 'Teens B1', when: 'Mon 19 Oct, 16:00', detail: 'Daniel R.', ws: 'bright', meta: '2 days overdue', actions: [{ label: 'Send reminder' }] },
+  { id: 'o2', type: 'overdue', urgency: 'later', scope: 'team', title: 'Adults B1', when: 'Tue 20 Oct, 18:00', detail: 'Lina M.', ws: 'bright', meta: '1 day overdue', actions: [{ label: 'Reminded today', done: true }] },
+  { id: 'o3', type: 'overdue', urgency: 'soon', scope: 'team', title: 'IELTS Writing', when: 'Tue 20 Oct, 10:00', detail: 'Jonas P.', ws: 'bright', meta: '1 day overdue', actions: [{ label: 'Send reminder' }] },
+  { id: 'p1', type: 'no-plan', urgency: 'now', scope: 'mine', title: 'Business English', when: '09:00', detail: '', ws: 'bright', meta: 'Tomorrow', actions: [{ label: 'Attach plan', primary: true }] },
   { id: 'e1', type: 'ending', urgency: 'soon', scope: 'mine', title: 'Omar K. · 1:1', detail: '', ws: 'personal', meta: '5 of 40 h left', actions: [] },
   { id: 'e2', type: 'ending', urgency: 'soon', scope: 'team', title: 'Adults B1', detail: 'Lina M. recommends more hours', ws: 'bright', meta: '9 of 48 h left', actions: [{ label: 'Discuss' }] },
   { id: 'f1', type: 'follow-up', urgency: 'later', scope: 'mine', title: 'Send Ali writing feedback on his opinion essay', detail: 'Linked to B2 Exam prep', ws: 'bright', meta: 'Due Fri', actions: [] },

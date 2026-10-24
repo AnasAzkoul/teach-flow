@@ -7,7 +7,7 @@ import { Paperclip, Video, FileText, MapPin, ChevronRight } from '@lucide/vue'
 import TodoGrouped from './TodoGrouped.vue'
 import TodoRail from './TodoRail.vue'
 import TodoLanes from './TodoLanes.vue'
-import { todoItems, type TodoFilter } from '~/prototype-visual/todo'
+import { todoItems, isNudge, type TodoFilter } from '~/prototype-visual/todo'
 import { Button } from '@/components/ui/button'
 import AppShell from './AppShell.vue'
 import WsDot from './WsDot.vue'
@@ -16,7 +16,7 @@ import { now, today, ws } from '~/prototype-visual/data'
 defineProps<{ todo: '1' | '2' | '3' }>()
 const filter = ref<TodoFilter>({ urgency: 'all', type: 'all', scope: 'all' })
 const subs = todoItems.filter((i) => i.type === 'substitute').length
-const overdue = todoItems.filter((i) => i.type === 'overdue').length
+const overdue = todoItems.filter((i) => i.type === 'overdue' && !isNudge(i)).length
 function jump(type: TodoFilter['type']) {
   filter.value = { urgency: 'all', type, scope: 'all' }
   document.getElementById('todo')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -37,7 +37,7 @@ const actionIcon = { 'Attach plan': Paperclip, 'Open plan': FileText, 'Join meet
             <span class="size-1.5 rounded-full bg-danger" aria-hidden="true" />{{ subs }} lessons need a substitute<ChevronRight class="size-4 stroke-[1.5]" />
           </button>
           <button class="inline-flex min-h-11 items-center gap-1.5 font-medium text-danger hover:underline md:min-h-0" @click="jump('overdue')">
-            <span class="size-1.5 rounded-full bg-danger" aria-hidden="true" />{{ overdue }} reports overdue<ChevronRight class="size-4 stroke-[1.5]" />
+            <span class="size-1.5 rounded-full bg-danger" aria-hidden="true" />{{ overdue }} {{ overdue === 1 ? 'report' : 'reports' }} overdue<ChevronRight class="size-4 stroke-[1.5]" />
           </button>
         </p>
       </header>

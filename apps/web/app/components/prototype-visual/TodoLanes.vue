@@ -6,10 +6,10 @@ import { Plus, Check } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
 import WsDot from './WsDot.vue'
 import { ws } from '~/prototype-visual/data'
-import { todoItems, applyFilter, countBy, TYPES, TYPE_ORDER, URGENCY, URGENCY_ORDER, toneText, type TodoFilter } from '~/prototype-visual/todo'
+import { todoItems, applyFilter, countBy, TYPES, TYPE_ORDER, URGENCY, URGENCY_ORDER, toneText, rowTone, isNudge, type TodoFilter } from '~/prototype-visual/todo'
 
 const filter = defineModel<TodoFilter>('filter', { required: true })
-const shown = computed(() => applyFilter(todoItems, { ...filter.value, urgency: 'all' }))
+const shown = computed(() => applyFilter(todoItems, { ...filter.value, urgency: 'all' }).sort((a, b) => Number(isNudge(a)) - Number(isNudge(b))))
 const byType = computed(() => countBy(applyFilter(todoItems, { ...filter.value, type: 'all', urgency: 'all' }), (i) => i.type))
 const totalByType = countBy(todoItems, (i) => i.type)
 const chip = (on: boolean) => ['inline-flex h-11 md:h-8 shrink-0 items-center gap-1.5 rounded-control border px-2.5 text-sm font-medium transition-colors', on ? 'border-accent bg-accent-soft text-accent' : 'border-hairline bg-surface text-ink hover:border-field']
@@ -42,7 +42,7 @@ const chip = (on: boolean) => ['inline-flex h-11 md:h-8 shrink-0 items-center ga
           {{ URGENCY[u].label }} <span class="tnum font-normal text-muted">{{ shown.filter((i) => i.urgency === u).length }} · {{ URGENCY[u].hint }}</span>
         </h3>
         <article v-for="i in shown.filter((x) => x.urgency === u)" :key="i.id" class="tf-card flex flex-col gap-2 p-(--card-pad)">
-          <p class="flex items-center gap-1.5 text-xs font-medium" :class="toneText[TYPES[i.type].tone]">
+          <p class="flex items-center gap-1.5 text-xs font-medium" :class="toneText[rowTone(i)]">
             <component :is="TYPES[i.type].icon" class="size-4 stroke-[1.75]" />{{ TYPES[i.type].label }}
           </p>
           <p class="text-sm font-medium">{{ i.title }}<template v-if="i.when"> · <span class="tnum whitespace-nowrap">{{ i.when }}</span></template></p>
