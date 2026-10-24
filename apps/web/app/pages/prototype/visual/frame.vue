@@ -15,7 +15,7 @@ const route = useRoute()
 const router = useRouter()
 const dir = computed(() => (route.query.dir as DirKey) || 'B')
 const screen = computed(() => (route.query.screen as ScreenKey) || 'home')
-const todo = computed(() => (route.query.todo as '1' | '2' | '3') || '1')
+const todo = computed(() => (route.query.todo as '1' | '2' | '3') || '2')
 const todayState = computed(() => (route.query.today as TodayState) || 'busy')
 
 useHead({ htmlAttrs: { 'data-dir': dir } })

@@ -13,7 +13,7 @@ const router = useRouter()
 
 const dir = computed(() => (route.query.dir as DirKey) || 'B')
 const screen = computed(() => (route.query.screen as ScreenKey) || 'home')
-const todo = computed(() => (route.query.todo as string) || '1')
+const todo = computed(() => (route.query.todo as string) || '2')
 const today = computed(() => (route.query.today as string) || 'busy')
 const TODO_VARIANTS = [
   { key: '1', name: 'Grouped' },
