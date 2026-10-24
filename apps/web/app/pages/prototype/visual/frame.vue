@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // PROTOTYPE. Renders one screen in one direction. Loaded inside the switcher's iframe so that
 // the phone width is a real 390 px viewport (media queries and all), but it also works on its own:
-// /prototype/visual/frame?dir=B&screen=home
+// /prototype/visual/frame?dir=B&screen=home (Home also takes &todo=1|2|3 and &today=busy|done|none)
 import { computed, onMounted, onBeforeUnmount } from 'vue'
 import HomeScreen from '~/components/prototype-visual/HomeScreen.vue'
 import LessonScreen from '~/components/prototype-visual/LessonScreen.vue'
@@ -9,12 +9,14 @@ import WeekScreen from '~/components/prototype-visual/WeekScreen.vue'
 import ContrastScreen from '~/components/prototype-visual/ContrastScreen.vue'
 import type { DirKey } from '~/prototype-visual/tokens'
 import type { ScreenKey } from '~/prototype-visual/screens'
+import type { TodayState } from '~/prototype-visual/data'
 
 const route = useRoute()
 const router = useRouter()
 const dir = computed(() => (route.query.dir as DirKey) || 'B')
 const screen = computed(() => (route.query.screen as ScreenKey) || 'home')
 const todo = computed(() => (route.query.todo as '1' | '2' | '3') || '1')
+const todayState = computed(() => (route.query.today as TodayState) || 'busy')
 
 useHead({ htmlAttrs: { 'data-dir': dir } })
 
@@ -37,7 +39,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <HomeScreen v-if="screen === 'home'" :todo="todo" />
+  <HomeScreen v-if="screen === 'home'" :todo="todo" :today-state="todayState" />
   <LessonScreen v-else-if="screen === 'lesson-plan'" key="plan" tab="plan" />
   <LessonScreen v-else-if="screen === 'lesson-report'" key="report" tab="report" />
   <WeekScreen v-else-if="screen === 'week'" key="week" />

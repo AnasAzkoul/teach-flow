@@ -34,6 +34,12 @@ export const today = [
   { id: 't3', start: '18:00', end: '19:30', klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2', participants: 9, action: 'Attach plan' as TodayAction, status: 'No plan yet' },
 ]
 
+// Today when nothing is left (?today=done: evening, every report done; ?today=none: no lessons today).
+export type TodayState = 'busy' | 'done' | 'none'
+export const eveningNow = { time: '20:10' }
+export const todayDoneStatus: Record<string, string> = { t1: 'Report done · 10:52', t2: 'Report done · 13:20', t3: 'Report done · 19:48' }
+export const nextLesson = { day: 'Fri 23 Oct', time: '09:00', klass: 'Business English' }
+
 export type TodoKind = 'overdue' | 'no-plan' | 'ending' | 'draft' | 'follow-up'
 export const todos = [
   { id: 'd1', kind: 'overdue' as TodoKind, title: 'Report overdue', detail: 'Teens B1+ · Tue 20 Oct, 16:00', ws: 'bright', meta: 'Reminded by Noura S. today' },
