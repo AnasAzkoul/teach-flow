@@ -53,18 +53,24 @@ export function contrast(a: string, b: string): number {
 
 // ---------- workspace colours ----------
 
-// Hue angles in OKLCH. Each direction picks 8 of these in a fixed slot order.
+// One set of 8 colour families, in the same slot order, for every direction: a teacher's workspace
+// keeps its colour family whichever direction they pick. Directions only change strength (chroma,
+// dot lightness). Hue angles (OKLCH) sit inside the gaps visual-direction.md leaves: away from both
+// accents (teal 192, indigo 277), pure red (27), amber (62) and success green (152). They were picked
+// by maximising the smallest dot-to-dot ΔE (OKLab) across all three directions: 0.040, up from 0.027
+// (ochre-brown vs cocoa, now gone). Blue/violet still merge for deuteranopes; the workspace name is
+// always next to the colour, so colour is never the only signal.
 const HUES = {
-  'slate-blue': 255,
-  olive: 115,
-  plum: 330,
-  'ochre-brown': 70,
+  'slate-blue': 251,
+  olive: 95,
+  plum: 331,
+  'ochre-brown': 69,
   rose: 2,
-  teal: 190,
-  sky: 230,
-  violet: 295,
-  cocoa: 45,
+  sky: 212,
+  violet: 300,
+  moss: 133,
 } as const
+export const WS_FAMILIES = Object.keys(HUES) as HueName[]
 export type HueName = keyof typeof HUES
 
 export interface WsColour {
@@ -77,9 +83,9 @@ export interface WsColour {
 function wsPalette(names: HueName[], chroma: number, hueShift: number, dotL: number): WsColour[] {
   return names.map((name, i) => {
     const h = HUES[name] + hueShift
-    // Browns read as browns only when darker and less saturated.
-    const c = name === 'ochre-brown' || name === 'cocoa' ? chroma * 0.85 : chroma
-    const L = name === 'ochre-brown' || name === 'cocoa' ? dotL - 0.03 : dotL
+    // Brown reads as brown only when darker and less saturated.
+    const c = name === 'ochre-brown' ? chroma * 0.85 : chroma
+    const L = name === 'ochre-brown' ? dotL - 0.03 : dotL
     return {
       slot: i + 1,
       name,
@@ -89,7 +95,7 @@ function wsPalette(names: HueName[], chroma: number, hueShift: number, dotL: num
         text: oklch(0.42, c * 0.85, h),
       },
       dark: {
-        dot: oklch(0.7, c * 0.95, h),
+        dot: oklch(name === 'ochre-brown' ? 0.66 : 0.7, c * 0.95, h),
         tint: oklch(0.3, c * 0.42, h),
         text: oklch(0.9, c * 0.35, h),
       },
@@ -191,7 +197,8 @@ const A: Direction = {
       ...semanticDark,
     },
   },
-  workspaces: wsPalette(['slate-blue', 'olive', 'plum', 'ochre-brown', 'rose', 'violet', 'sky', 'cocoa'], 0.075, 0, 0.56),
+  // Earthy: low chroma.
+  workspaces: wsPalette(WS_FAMILIES, 0.075, 0, 0.56),
 }
 
 const B_HUE = 70
@@ -224,7 +231,8 @@ const B: Direction = {
       ...semanticDark,
     },
   },
-  workspaces: wsPalette(['slate-blue', 'olive', 'plum', 'ochre-brown', 'rose', 'teal', 'sky', 'cocoa'], 0.105, 0, 0.58),
+  // Clear: more chroma, a touch lighter.
+  workspaces: wsPalette(WS_FAMILIES, 0.105, 0, 0.58),
 }
 
 const C_HUE = 70
@@ -257,8 +265,9 @@ const C: Direction = {
       ...semanticDark,
     },
   },
-  // Muted and slightly cooler: hues nudged 8° toward blue.
-  workspaces: wsPalette(['slate-blue', 'olive', 'plum', 'ochre-brown', 'rose', 'teal', 'sky', 'violet'], 0.075, 8, 0.56),
+  // Muted: low chroma. No hue nudge any more (it moved moss toward success green); the near-neutral
+  // page already makes Ledger read cooler.
+  workspaces: wsPalette(WS_FAMILIES, 0.07, 0, 0.56),
 }
 
 export const DIRECTIONS: Record<DirKey, Direction> = { A, B, C }
@@ -361,7 +370,7 @@ export function contrastPairs(d: Direction, mode: Mode): Pair[] {
     const g = `Workspace ${w.slot} · ${w.name}`
     pairs.push(
       { group: g, label: 'Text on tint (lesson block)', fgToken: `ws${w.slot}-text`, bgToken: `ws${w.slot}-tint`, fg: ws.text, bg: ws.tint, kind: 'text', min: 4.5 },
-      { group: g, label: 'Dot on surface (switcher, Coming up)', fgToken: `ws${w.slot}-dot`, bgToken: 'surface', fg: ws.dot, bg: c.surface!, kind: 'ui', min: 3 },
+      { group: g, label: 'Dot on surface (switcher, My week legend)', fgToken: `ws${w.slot}-dot`, bgToken: 'surface', fg: ws.dot, bg: c.surface!, kind: 'ui', min: 3 },
       { group: g, label: 'Clash outline (danger) on tint', fgToken: 'danger', bgToken: `ws${w.slot}-tint`, fg: c.danger!, bg: ws.tint, kind: 'ui', min: 3 },
     )
   }
