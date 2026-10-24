@@ -52,10 +52,11 @@
   --radius-control: var(--r-control);
   --shadow-overlay: var(--shadow-overlay);
 
-  /* shared type scale (visual-direction.md: 12 / 14 / 16 / 18 / 24 / 30) */
-  --text-xs: 12px;
+  /* shared type scale (visual-direction.md: 12 / 14 / 16 / 18 / 24 / 30); the two small steps come from
+     the direction (--fs-xs / --fs-sm), because Notebook's Source Sans 3 needs them 1 px larger */
+  --text-xs: var(--fs-xs, 12px);
   --text-xs--line-height: 16px;
-  --text-sm: 14px;
+  --text-sm: var(--fs-sm, 14px);
   --text-sm--line-height: 20px;
   --text-base: 16px;
   --text-base--line-height: 26px;

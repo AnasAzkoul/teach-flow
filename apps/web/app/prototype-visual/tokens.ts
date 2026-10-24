@@ -104,6 +104,8 @@ export interface Direction {
   name: string
   feel: string
   fonts: { ui: string; title: string; titleWeight: number; titleTracking: string }
+  /** the two small type steps; default 12 / 14. Source Sans 3 runs small, so Notebook uses 13 / 15. */
+  small?: { xs: number; sm: number }
   radius: { card: number; control: number }
   density: { row: number; cardPad: number; gap: number; prosePad: number }
   shadow: string
@@ -164,6 +166,7 @@ const A: Direction = {
   name: 'Notebook',
   feel: 'Warm, editorial, a paper planner',
   fonts: { ui: "'Source Sans 3'", title: "'Newsreader'", titleWeight: 500, titleTracking: '-0.005em' },
+  small: { xs: 13, sm: 15 },
   radius: { card: 12, control: 8 },
   density: { row: 44, cardPad: 16, gap: 16, prosePad: 24 },
   shadow: '0 10px 28px -8px rgb(70 52 24 / 0.20), 0 2px 6px -1px rgb(70 52 24 / 0.08)',
@@ -288,6 +291,7 @@ export function cssFor(d: Direction): string {
     `--font-ui:${d.fonts.ui}, ui-sans-serif, system-ui, sans-serif;`,
     `--font-title-family:${d.fonts.title}, ${d.fonts.ui}, ui-serif, serif;`,
     `--title-weight:${d.fonts.titleWeight};--title-tracking:${d.fonts.titleTracking};`,
+    `--fs-xs:${d.small?.xs ?? 12}px;--fs-sm:${d.small?.sm ?? 14}px;`,
     `--r-card:${d.radius.card}px;--r-control:${d.radius.control}px;`,
     `--row-h:${d.density.row}px;--card-pad:${d.density.cardPad}px;--block-gap:${d.density.gap}px;--prose-pad:${d.density.prosePad}px;`,
     `--shadow-overlay:${d.shadow};`,

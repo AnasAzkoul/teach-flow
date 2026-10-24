@@ -18,7 +18,9 @@ const screen = computed(() => (route.query.screen as ScreenKey) || 'home')
 const todo = computed(() => (route.query.todo as '1' | '2' | '3') || '2')
 const todayState = computed(() => (route.query.today as TodayState) || 'busy')
 
-useHead({ htmlAttrs: { 'data-dir': dir } })
+// ?small=shared puts the 12 / 14 px small steps back, to compare Notebook before and after its 13 / 15 px fix.
+const smallStyle = computed(() => (route.query.small === 'shared' ? '--fs-xs:12px;--fs-sm:14px' : undefined))
+useHead({ htmlAttrs: { 'data-dir': dir, style: smallStyle } })
 
 function onMessage(e: MessageEvent) {
   if (e.origin === location.origin && e.data?.type === 'proto-state') router.replace({ query: e.data.query })
