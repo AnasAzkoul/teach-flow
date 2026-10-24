@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { ChevronLeft, ChevronRight, TriangleAlert, CalendarX, MapPin, Clock } from '@lucide/vue'
+import { ChevronLeft, ChevronRight, TriangleAlert, CalendarX, MapPin, Clock, X } from '@lucide/vue'
+import { PopoverRoot, PopoverTrigger, PopoverPortal, PopoverContent, DialogRoot, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogClose } from 'reka-ui'
 import { Button } from '@/components/ui/button'
 import AppShell from './AppShell.vue'
 import WsDot from './WsDot.vue'
+import LessonCard from './LessonCard.vue'
 import { weekDays, weekLessons, workspaces, ws, fmt, now, type WeekLesson } from '~/prototype-visual/data'
 
 defineProps<{ dark?: boolean }>()
@@ -29,7 +31,8 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
 </script>
 
 <template>
-  <div :data-theme="dark ? 'dark' : undefined" class="bg-page">
+  <!-- the card portals in here, so it keeps the dark theme -->
+  <div id="week-root" :data-theme="dark ? 'dark' : undefined" class="bg-page">
     <AppShell active="week">
       <div class="flex flex-col gap-4 px-4 py-5 md:px-8 md:py-6">
         <header class="flex flex-wrap items-center gap-3">
@@ -67,11 +70,13 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
               <div v-if="i === now.dayIndex" class="absolute inset-x-0 z-10 flex items-center" :style="{ top: `${top(now.minutes)}px` }">
                 <span class="-ml-1 size-2 rounded-full bg-ink" /><span class="h-px flex-1 bg-ink" />
               </div>
-              <a
-                v-for="l in weekLessons.filter((x) => x.day === i)" :key="l.id" href="#"
+              <PopoverRoot v-for="l in weekLessons.filter((x) => x.day === i)" :key="l.id">
+              <PopoverTrigger as-child>
+              <button
+                type="button"
                 :class="[
                   `ws-${ws(l.ws).slot}`,
-                  'absolute flex flex-col overflow-hidden rounded-[calc(var(--r-control)+1px)] border-l-[3px] px-1.5 py-1 text-xs leading-4 transition-[filter] hover:brightness-[0.97]',
+                  'absolute flex flex-col overflow-hidden text-left focus-visible:z-20 data-[state=open]:z-20 data-[state=open]:brightness-[0.95] rounded-[calc(var(--r-control)+1px)] border-l-[3px] px-1.5 py-1 text-xs leading-4 transition-[filter] hover:brightness-[0.97]',
                   l.cancelled ? 'border-field bg-sunken text-muted' : 'border-ws-dot bg-ws-tint text-ws-text',
                   l.clash ? 'outline-2 outline-danger -outline-offset-1 z-[5]' : '',
                 ]"
@@ -85,7 +90,17 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
                 <span v-if="l.cancelled" class="flex items-center gap-1 font-medium"><CalendarX class="size-3.5 stroke-[1.5]" />Cancelled · {{ ws(l.ws).name }}</span>
                 <span v-else class="truncate">{{ ws(l.ws).name }} · {{ l.place }}</span>
                 <span v-if="l.clash" class="mt-auto flex items-center gap-1 font-semibold text-danger"><TriangleAlert class="size-3.5 stroke-[1.75]" />Clash</span>
-              </a>
+              </button>
+              </PopoverTrigger>
+              <PopoverPortal to="#week-root">
+                <PopoverContent
+                  side="right" align="start" :side-offset="6" :collision-padding="16"
+                  class="z-50 w-80 rounded-card border border-hairline bg-surface p-4 text-ink shadow-overlay outline-none"
+                >
+                  <LessonCard :lesson="l" />
+                </PopoverContent>
+              </PopoverPortal>
+              </PopoverRoot>
             </div>
           </div>
         </div>
@@ -104,11 +119,11 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
           <p class="mt-2 text-sm font-semibold">{{ selectedDay === now.dayIndex ? 'Today' : weekDays[selectedDay] }} <span class="font-normal text-muted">· {{ dayLessons.length }} lessons</span></p>
           <ul class="mt-2 flex flex-col gap-2">
             <li v-for="l in dayLessons" :key="l.id">
-              <a
-                href="#"
+              <DialogRoot>
+              <DialogTrigger
                 :class="[
                   `ws-${ws(l.ws).slot}`,
-                  'flex min-h-16 gap-3 rounded-card border-l-4 px-3 py-2.5',
+                  'flex min-h-16 w-full gap-3 rounded-card text-left border-l-4 px-3 py-2.5',
                   l.cancelled ? 'border-field bg-sunken text-muted' : 'border-ws-dot bg-ws-tint text-ws-text',
                   l.clash ? 'outline-2 outline-danger -outline-offset-1' : '',
                 ]"
@@ -118,10 +133,25 @@ const dayLessons = computed(() => weekLessons.filter((l) => l.day === selectedDa
                   <span class="text-base font-semibold leading-6" :class="l.cancelled && 'line-through'">{{ l.klass }}</span>
                   <span class="flex items-center gap-1 text-sm"><MapPin class="size-3.5 stroke-[1.5]" />{{ ws(l.ws).name }} · {{ l.place }}</span>
                   <span v-if="l.clash" class="flex items-center gap-1 text-sm font-semibold text-danger"><TriangleAlert class="size-4 stroke-[1.75]" />Clash with another lesson</span>
-                  <span v-if="l.cancelled" class="flex items-center gap-1 text-sm font-medium"><CalendarX class="size-4 stroke-[1.5]" />Cancelled by student</span>
+                  <span v-if="l.cancelled" class="flex items-center gap-1 text-sm font-medium"><CalendarX class="size-4 stroke-[1.5]" />Cancelled by {{ l.cancelled.by.toLowerCase() }}</span>
                   <span v-if="noPlan(l)" class="flex items-center gap-1 text-sm"><Clock class="size-4 stroke-[1.5]" />No plan</span>
                 </span>
-              </a>
+              </DialogTrigger>
+              <DialogPortal to="#week-root">
+                <DialogOverlay class="fixed inset-0 z-40 bg-ink/30" />
+                <DialogContent
+                  :aria-describedby="undefined"
+                  class="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto rounded-t-card border-t border-hairline bg-surface px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-ink shadow-overlay outline-none"
+                >
+                  <div class="mx-auto mb-3 h-1 w-10 rounded-full bg-field" aria-hidden="true" />
+                  <DialogTitle class="sr-only">{{ l.klass }}</DialogTitle>
+                  <LessonCard :lesson="l" sheet />
+                  <DialogClose class="absolute top-5 right-2 flex size-11 items-center justify-center rounded-control text-muted hover:bg-sunken" aria-label="Close">
+                    <X class="size-5 stroke-[1.5]" />
+                  </DialogClose>
+                </DialogContent>
+              </DialogPortal>
+              </DialogRoot>
             </li>
             <li v-if="!dayLessons.length" class="py-8 text-center text-sm text-muted">No lessons this day</li>
           </ul>

@@ -121,6 +121,7 @@ export const reportFields = {
 // ---------- My week ----------
 // Mon 19 – Sun 25 Oct. day: 0 = Mon. Times in minutes from midnight.
 
+export type ReportState = 'none' | 'draft' | 'done'
 export interface WeekLesson {
   id: string
   day: number
@@ -128,31 +129,61 @@ export interface WeekLesson {
   end: number
   klass: string
   ws: string
-  place: string
-  cancelled?: boolean
+  place: string // "Online" for online lessons
+  online?: boolean
+  participants: number
+  plan?: string // plan title; none = no plan
+  report: ReportState // only shown once the lesson has started
+  cancelled?: { by: 'Student' | 'Teacher' | 'School'; reason: string }
   clash?: boolean
   noPlan?: boolean // shown only on lessons still to come
 }
 
+// Covers every lesson-card state at "now" (Thu 11:55): done report (w1), draft → Finish report (w4, w10),
+// none → Write report (w6, w8), online soon → Join meeting (w11), no plan → Attach plan (w12, w13),
+// plan → only Move / Cancel (w14), cancelled past (w5) and cancelled future → Restore lesson (w17).
 const t = (h: number, m = 0) => h * 60 + m
 export const weekDays = ['Mon 19', 'Tue 20', 'Wed 21', 'Thu 22', 'Fri 23', 'Sat 24', 'Sun 25']
 export const weekLessons: WeekLesson[] = [
-  { id: 'w1', day: 0, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4' },
-  { id: 'w2', day: 0, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online' },
-  { id: 'w3', day: 0, start: t(18), end: t(19, 30), klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2' },
-  { id: 'w4', day: 1, start: t(10), end: t(11, 30), klass: 'Business German', ws: 'riverside', place: 'Riverside · Room B' },
-  { id: 'w5', day: 1, start: t(14), end: t(15), klass: 'Leila S. · 1:1', ws: 'personal', place: 'Online', cancelled: true },
-  { id: 'w6', day: 1, start: t(16), end: t(17, 30), klass: 'Teens B1+', ws: 'bright', place: 'Room 3' },
-  { id: 'w7', day: 2, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4' },
-  { id: 'w8', day: 2, start: t(17, 30), end: t(19), klass: 'Conversation club', ws: 'riverside', place: 'Riverside · Café', clash: true },
-  { id: 'w9', day: 2, start: t(18), end: t(19, 30), klass: 'Adults B1', ws: 'bright', place: 'Room 1', clash: true },
-  { id: 'w10', day: 3, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4' },
-  { id: 'w11', day: 3, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online' },
-  { id: 'w12', day: 3, start: t(18), end: t(19, 30), klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2', noPlan: true },
-  { id: 'w13', day: 4, start: t(9), end: t(10), klass: 'Business English', ws: 'bright', place: 'Client office', noPlan: true },
-  { id: 'w14', day: 4, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online' },
-  { id: 'w15', day: 4, start: t(14), end: t(15, 30), klass: 'Business German', ws: 'riverside', place: 'Riverside · Room B', noPlan: true },
-  { id: 'w16', day: 5, start: t(10), end: t(11), klass: 'Leila S. · 1:1', ws: 'personal', place: 'Online', noPlan: true },
+  { id: 'w1', day: 0, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4', participants: 6, plan: 'Opinion essays: planning', report: 'done' },
+  { id: 'w2', day: 0, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online', online: true, participants: 1, plan: 'Job interview role-play', report: 'done' },
+  { id: 'w3', day: 0, start: t(18), end: t(19, 30), klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2', participants: 9, plan: 'Past simple: weekend stories', report: 'done' },
+  { id: 'w4', day: 1, start: t(10), end: t(11, 30), klass: 'Business German', ws: 'riverside', place: 'Riverside · Room B', participants: 5, plan: 'Telefonieren im Büro', report: 'draft' },
+  { id: 'w5', day: 1, start: t(14), end: t(15), klass: 'Leila S. · 1:1', ws: 'personal', place: 'Online', online: true, participants: 1, plan: 'Phrasal verbs for travel', report: 'none', cancelled: { by: 'Student', reason: 'Ill, asked to move to next week' } },
+  { id: 'w6', day: 1, start: t(16), end: t(17, 30), klass: 'Teens B1+', ws: 'bright', place: 'Room 3', participants: 11, plan: 'Narrative tenses', report: 'none' },
+  { id: 'w7', day: 2, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4', participants: 6, plan: 'Opinion essays: model answer', report: 'done' },
+  { id: 'w8', day: 2, start: t(17, 30), end: t(19), klass: 'Conversation club', ws: 'riverside', place: 'Riverside · Café', participants: 8, plan: 'Food and festivals', report: 'none', clash: true },
+  { id: 'w9', day: 2, start: t(18), end: t(19, 30), klass: 'Adults B1', ws: 'bright', place: 'Room 1', participants: 7, plan: 'Giving advice', report: 'done', clash: true },
+  { id: 'w10', day: 3, start: t(9), end: t(10, 30), klass: 'B2 Exam prep', ws: 'bright', place: 'Room 4', participants: 6, plan: 'Opinion essays: linking ideas', report: 'draft' },
+  { id: 'w11', day: 3, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online', online: true, participants: 1, plan: 'Salary negotiation', report: 'none' },
+  { id: 'w12', day: 3, start: t(18), end: t(19, 30), klass: 'Adults A2 evening', ws: 'bright', place: 'Room 2', participants: 9, report: 'none', noPlan: true },
+  { id: 'w13', day: 4, start: t(9), end: t(10), klass: 'Business English', ws: 'bright', place: 'Client office', participants: 4, report: 'none', noPlan: true },
+  { id: 'w14', day: 4, start: t(12), end: t(13), klass: 'Omar K. · 1:1', ws: 'personal', place: 'Online', online: true, participants: 1, plan: 'Presenting numbers', report: 'none' },
+  { id: 'w15', day: 4, start: t(14), end: t(15, 30), klass: 'Business German', ws: 'riverside', place: 'Riverside · Room B', participants: 5, report: 'none', noPlan: true },
+  { id: 'w17', day: 4, start: t(16), end: t(17, 30), klass: 'Teens B1+', ws: 'bright', place: 'Room 3', participants: 11, plan: 'Storytelling with linkers', report: 'none', cancelled: { by: 'School', reason: 'Building closed for staff training' } },
+  { id: 'w16', day: 5, start: t(10), end: t(11), klass: 'Leila S. · 1:1', ws: 'personal', place: 'Online', online: true, participants: 1, report: 'none', noPlan: true },
 ]
+
+// Minutes from Mon 00:00, so lessons and "now" compare across days.
+export const at = (day: number, m: number) => day * 24 * 60 + m
+export const nowAt = at(now.dayIndex, now.minutes)
+export const started = (l: WeekLesson) => nowAt >= at(l.day, l.start)
+export const ended = (l: WeekLesson) => nowAt >= at(l.day, l.end)
+
+// Main button, shared rule with the Today cards: the first that matches wins.
+export type MainAction = 'Join meeting' | 'Write report' | 'Finish report' | 'Attach plan' | null
+export function mainAction(l: WeekLesson): MainAction {
+  if (l.cancelled) return null
+  if (l.online && nowAt >= at(l.day, l.start) - 15 && !ended(l)) return 'Join meeting'
+  if (((!l.online && started(l)) || ended(l)) && l.report !== 'done') return l.report === 'draft' ? 'Finish report' : 'Write report'
+  if (!l.plan) return 'Attach plan'
+  return null
+}
+
+// Move: a teacher until 30 min before the start; senior teachers and admins until the start.
+export const canMove = (l: WeekLesson) =>
+  !l.cancelled && nowAt < at(l.day, l.start) - (ws(l.ws).role === 'Teacher' ? 30 : 0)
+// Cancel / Restore: until the start.
+export const canCancel = (l: WeekLesson) => !started(l)
 
 export const fmt = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`
