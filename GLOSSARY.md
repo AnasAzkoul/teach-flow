@@ -224,12 +224,20 @@ A lesson that did not take place. It stays on record with a reason and who cance
 _Avoid_: Deleted lesson, no-show
 
 **My week**:
-A teacher's personal view of every lesson they teach across all their workspaces, showing only lesson basics (time, class, workspace, place), colour-coded by workspace, with clashes highlighted.
+A teacher's personal view of every lesson they teach across all their workspaces, showing only lesson basics (time, class, workspace, place), colour-coded by workspace, with clashes highlighted and upcoming lessons that have no plan marked "No plan". Opening a lesson there shows a lesson card with its details and quick actions (the main button, Move, Cancel lesson or Restore lesson).
 _Avoid_: Combined calendar, agenda
 
 **Workspace colour**:
-The colour a teacher gives one of their workspaces, picked from 8 fixed colours, used to tell their workspaces apart in My week, Coming up and the workspace switcher. It belongs to the teacher, not the workspace: two teachers can see the same school in different colours. Each new workspace gets the next colour the teacher isn't using yet, and the teacher can change it.
+The colour a teacher gives one of their workspaces, picked from 8 fixed colour families (slate-blue, olive, plum, ochre-brown, rose, sky, violet, moss), used to tell their workspaces apart in My week and the workspace switcher. It belongs to the teacher, not the workspace: two teachers can see the same school in different colours. It is the same family in every appearance. Each new workspace gets the next colour the teacher isn't using yet, and the teacher can change it.
 _Avoid_: School colour, brand colour, theme
+
+**Appearance**:
+A user's own choice of how the app looks: Notebook, Studio or Ledger. It belongs to the user, applies in every workspace they belong to, and nobody else can set it. New users start on Notebook.
+_Avoid_: Theme, skin, style
+
+**Notebook / Studio / Ledger**:
+The three appearances. Notebook is warm and paper-like, Studio is bright and friendly, Ledger is crisp and compact. They change only how the app looks, never what it shows or what a workspace colour is.
+_Avoid_: Direction A / B / C (the prototype names)
 
 **Clash**:
 Two of a teacher's lessons that overlap in time, or two in-person lessons at different places less than 30 minutes apart. Flagged in My week across all the teacher's workspaces.

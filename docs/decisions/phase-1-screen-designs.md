@@ -14,44 +14,78 @@ New glossary terms from this session: **Follow-up**, **Overdue report**, **Clash
 
 ## Home
 
-Three personal blocks, for the lessons the user teaches (as assigned teacher or substitute) in every workspace:
+Updated 24 Oct 2026 after the visual-design prototype review (`visual-design.md`). The Needs a substitute strip, Coming up and the separate team blocks for substitute requests, lessons without a teacher, overdue reports and classes ending soon are gone; their items now live in To do.
 
-- **Today**: one card per lesson. Each card has one main button that changes with the lesson's state:
-  1. **Attach plan** if the lesson has no plan copy.
-  2. **Open plan** once it has one.
-  3. **Join meeting** for online lessons, from 10 minutes before the start until the end.
-  4. **Write report** (or **Finish report** if a draft exists) from the lesson's start.
+Two personal blocks, for the lessons the user teaches (as assigned teacher or substitute) in every workspace, plus team items in To do for senior teachers and admins:
 
-  The rest of the card opens the Lesson page. Moving or cancelling a lesson happens on the Lesson page, not on Home.
-- **To do** gets items from two places:
+- **Today**: one card per lesson. Each card has at most one main button, the one filled "do this next" button on Home. It follows the **main button rule**, shared with the My week lesson card. Apply the first that matches:
+  1. **Join meeting**: an online lesson, from **15 minutes** before the start until the end (was 10).
+  2. **Write report** (or **Finish report** if a draft exists): an **in-person lesson once it has started**, or **any lesson that has ended**, while the report isn't done. Attendance is part of the report and is taken at the start of class.
+  3. **Attach plan**: the lesson has no plan copy.
+  4. Otherwise, **no main button**. **Open plan is dropped**: the card itself opens the lesson.
+
+  A lesson whose report is done shows "✓ Report done · 14:32" instead of a button. The rest of the card opens the Lesson page. Home has no Move or Cancel.
+- **Next line**: when the user has no lessons today, or every lesson today is done, Today ends with one line, for example "Next: Fri 23 Oct, 09:00 · Business English ›", which opens that lesson. It isn't shown mid-day.
+- **To do** gets items from three places:
   - **Automatic** (worked out by the app, never stored, gone once fixed): report missing, report draft, overdue report, no plan for a lesson in the next 48 h, and the class-hours steps (see Class page).
   - **Follow-ups**: personal reminders the member writes, visible only to their creator.
-- **Coming up**: the next 7 days after today, grouped by day, with a workspace colour dot and a "no plan" flag on each lesson. No cap on items. Ends with a link to My week.
+  - **Team items**, for senior teachers (their team) and admins (whole school, and teachers in no team): lessons that need a substitute (no teacher, or an open substitute request, with **Approve** or **Choose**), reports overdue (with **Send reminder**), and classes ending soon (with the renewal recommendation; senior teachers view and discuss, admins resolve with **Add hours** / **Won't renew**). Each is tagged with a muted "Team" word.
 - **Pending invites**: a banner above Home (and in the workspace switcher).
 
-**Needs a substitute strip**: a red strip at the very top of a senior teacher's Home (their team) and an admin's Home (whole school), above their own Today. It lists lessons in the next 48 hours that have no teacher or an open substitute request, with one-tap **Approve** or **Choose**. Later requests stay in the blocks below.
+### To do: the list
 
-**Team and school blocks**: one group per school workspace where the user leads a team or runs the school, placed below the personal blocks. Senior teachers see them for **their team's classes**; admins and super-admins see them for the **whole school**.
+- **One list sorted by urgency**, with quiet in-list labels and no filled bands:
+  - **Needs action now**: due within 48 h or already late.
+  - **This week**: the next 7 days (replaces "Soon").
+  - **Later**.
+- **Types**: Needs a substitute, Report overdue, No plan, Class ending soon, Report draft, Follow-up.
+- **Team items you can only nudge** (your only action is Send reminder or Discuss, or someone already handled it) are grey and never in Needs action now. Red means only what the viewer must decide or do themself.
+- **Rows**:
+  - Urgency shows as an icon plus a coloured type label. Timings ("Tomorrow", "2 days overdue") are ink, not red.
+  - Each fact appears once per row. "Team" is a muted word, not a badge.
+  - On wide screens, timings and actions line up in columns. On phones a row stacks: type, title, details, then the timing next to the buttons.
+  - Buttons are outlined (main action) or ghost (secondary), never filled.
+  - A follow-up's circle is a real **Mark done** button.
 
-| Block | Senior teacher | Admin / super-admin |
-|---|---|---|
-| Reports overdue, with **Send reminder** | team | school |
-| Substitute requests (approve the suggested teacher or pick another) | team | school (and teachers in no team) |
-| Lessons without a teacher | team | school |
-| Classes ending soon, with renewal recommendations | team (view and discuss) | school (resolve with Add hours / Won't renew) |
-| Cancelled this week (counted by who cancelled) | – | school |
-| Pending invites (flagging ones about to expire) | – | school |
+### To do: filters ("Filter rail")
 
+- **All / Mine / My team** sits in the To do header. It's a full-width row on phones.
+- A **rail on the right, outside the list card**, filters **by type only**. It's quiet until used, "All" is the reset, and below about 1024 px it collapses to one select.
+- No urgency filter: the list is already sorted and labelled by urgency.
+- **Clear filters** shows when any filter is on. Types with no matches are greyed out, not hidden.
+- Empty states: "No items match these filters. Show all" when filters hide everything; "All caught up." when there is nothing.
+
+### Team and school blocks
+
+Only the admin-only blocks remain as blocks, below To do, one group per school workspace the user runs:
+
+| Block | Admin / super-admin |
+|---|---|
+| Cancelled this week (counted by who cancelled) | school |
+| Pending invites (flagging ones about to expire) | school |
+
+- **Open**: these two weren't redesigned in the prototype review. They stay as settled until a later review.
 - **Send reminder** emails the teacher and adds "Reminded by X" to that item in the teacher's To do, at most once a day per report. Still no notification centre.
-- A user who teaches nothing in a workspace sees an empty Today ("No lessons today") and only that workspace's blocks. Nobody sees other teachers' lessons as Today cards.
+- A user who teaches nothing in a workspace sees an empty Today ("No lessons today") and only that workspace's team items and blocks. Nobody sees other teachers' lessons as Today cards.
 
 ## My week
 
 - **Desktop:** a time grid. **Phones:** a day list.
 - **Clashes** are outlined: two lessons that overlap, or two in-person lessons at different places less than 30 minutes apart.
-- Each lesson shows only the basics: time, class, workspace, place.
+- Each lesson shows only the basics: time, class, workspace, place. One exception:
+  - **No plan mark**: an upcoming lesson with no plan copy shows a small clock (no fill, in the workspace text colour, read out as "No plan"). On phones it's a "No plan" line. It never shows on past or cancelled lessons. This took over Coming up's one unique job, warning about a missing plan 3–7 days ahead; To do keeps its 48-hour No plan item as the safety net.
 - **Workspace colours belong to each teacher**, not to the workspace. One is assigned automatically from 8 fixed colours when the teacher joins a workspace, and the teacher can change it by clicking the colour dot in the workspace switcher.
-- Clicking a lesson opens its Lesson page, and the switcher follows to that lesson's workspace.
+- **Lesson card**: clicking a lesson on desktop opens a popover (click, not hover; Esc or a click outside closes it). Tapping a lesson on a phone opens the same card as a bottom sheet. Top to bottom:
+  1. Class (a link to the Lesson page) and date and time.
+  2. Workspace and place.
+  3. Participants.
+  4. Plan status.
+  5. Report status, once the lesson has started.
+  6. Clash, naming the other lesson.
+  7. On a cancelled lesson: who cancelled and why.
+  8. Buttons: the main button (the main button rule under Home), **Move** (only while the move cutoff allows), and **Cancel lesson**, which becomes **Restore lesson** on a cancelled lesson. The rules for these actions are the Lesson page's.
+- This reverses "moving or cancelling happens on the Lesson page, not on Home" for My week only. Home still has no Move or Cancel.
+- Following the class link opens the Lesson page, and the switcher follows to that lesson's workspace.
 
 ## Library
 
@@ -149,7 +183,7 @@ Deferred on purpose, to revisit later:
 
 - ~~**Admin view of overdue reports, with "Send reminder" to the teacher.**~~ Resolved in `levels-of-access.md`: senior teachers (for their team) and admins (whole school) see a "Reports overdue" block, and Send reminder emails the teacher and tags their To do item.
 - ~~**Members settings page**~~ (agreed only "for now"): replaced in `levels-of-access.md`, which adds a Teams tab and read-only access for teachers.
-- ~~**Home priority for senior teachers**~~: resolved in `levels-of-access.md` as the **Needs a substitute** strip at the top of Home.
+- ~~**Home priority for senior teachers**~~: resolved in `levels-of-access.md` as the **Needs a substitute** strip at the top of Home, then replaced (24 Oct 2026, `visual-design.md` review) by team items inside To do, sorted by urgency.
 - **Team week view** for senior teachers and admins: not in Phase 1 (availability in the pickers covers the need). My week stays personal.
 - ~~**Cross-workspace reads for Home and the personal-library toggle**~~: resolved by ADR 0008, which allows both as narrow, read-only reads of the user's own data only.
 - **Per-student hour packages** (students who join mid-way, whether absences use up hours, pricing): later billing phase. Phase 1 keeps hours on the class.

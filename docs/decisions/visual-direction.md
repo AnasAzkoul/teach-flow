@@ -2,7 +2,7 @@
 
 Outcome of the visual-design grilling session (21–22 Oct 2026). Covers look and feel only. Layouts are settled in `phase-1-screen-designs.md` and are not reopened here; the stack (shadcn-vue + Tailwind v4, Lucide) is settled in `tech-stack.md`. Terms follow `GLOSSARY.md`.
 
-Items marked **(prototype)** are open on purpose: they can only be settled by seeing them. They are collected under "Open questions for the prototype".
+Items marked **(prototype)** were open on purpose: they could only be settled by seeing them. **All of them are now settled in `visual-design.md`** (24 Oct 2026), which also holds the final token values and contrast results. The rules below still apply except where noted.
 
 New glossary term from this session: **Workspace colour**.
 
@@ -27,7 +27,7 @@ New glossary term from this session: **Workspace colour**.
 
 - **Warm grey (Tailwind `stone`-like)**. The page is a slightly warm off-white; cards and surfaces are white on top of it.
 - Why: warm-but-professional, easy on the eyes during long writing, clearly different from default shadcn zinc, and calm next to all 8 workspace colours (a hue-tinted neutral would fight some of them).
-- How warm (subtle vs clearly beige): **(prototype)**.
+- How warm (subtle vs clearly beige): **(prototype)**. Settled: per Appearance (`visual-design.md`).
 
 ### Accent
 
@@ -36,19 +36,19 @@ New glossary term from this session: **Workspace colour**.
 - Why: gives Teach Flow an identity beyond default shadcn, and "only interactive things are this colour" is easy for a teacher in a hurry to learn.
 - Not the workspace colour as accent (the page would change colour per workspace, and workspace colours belong to the teacher, not the brand).
 - Not terracotta or other red-orange hues: too close to danger red and warning amber.
-- Which hue: **(prototype)**; it is one of the main differences between the three directions. A no-hue near-black accent is tested as direction C.
+- Which hue: **(prototype)**; it is one of the main differences between the three directions. A no-hue near-black accent is tested as direction C. Settled: per Appearance, deep teal / indigo / ink (`visual-design.md`).
 
 ### Semantic colours
 
 | Colour | Meaning | Examples |
 |---|---|---|
-| **Red** (danger) | Needs action now, or destructive | Needs a substitute strip, overdue report, clash outline, Cancel lesson, Remove member |
+| **Red** (danger) | Needs action now, or destructive | Needs a substitute item, overdue report, clash outline, Cancel lesson, Remove member |
 | **Amber** (warning) | Will need action soon | No plan within 48 h, class ending soon, report draft, invite about to expire |
 | **Green** (success) | Done / fine, used rarely | Report done, homework done, present |
 | **Neutral grey** | Inactive or past | Cancelled lessons, archived items, former members |
 
 - **No blue "info" colour**: blue is too close to the accent and the workspace colours. Info stays neutral.
-- **Quiet by default**: coloured icon and text on a neutral surface, or a very light tint. The **Needs a substitute strip is the only solid-colour fill** in the app.
+- **Quiet by default**: coloured icon and text on a neutral surface, or a very light tint. ~~The Needs a substitute strip is the only solid-colour fill in the app.~~ Changed 24 Oct 2026: the strip is gone, so **no alert uses a solid-colour fill**. In To do, red appears only on the icon and type label. The only filled "do this next" button is the main button on Today cards (`visual-design.md`).
 - **Green is rare**: "done" mostly means the item disappears (as To do already works), not that it turns green.
 - **Clash is red**, not amber.
 - Attendance and homework states in report rows are form controls: coloured only when selected, always with a label or icon.
@@ -56,19 +56,19 @@ New glossary term from this session: **Workspace colour**.
 
 ### Workspace colours
 
-- **8 muted, mid-saturation hues** spread around the wheel, skipping the accent's neighbourhood and pure red and amber, with green kept far enough from "success" not to read as it. Illustrative set: slate-blue, teal, olive-green, plum, rose, ochre-brown, sky, violet (each direction swaps out whichever is near its accent).
+- **8 muted, mid-saturation hues** spread around the wheel, skipping the accent's neighbourhood and pure red and amber, with green kept far enough from "success" not to read as it. ~~Illustrative set: slate-blue, teal, olive-green, plum, rose, ochre-brown, sky, violet (each direction swaps out whichever is near its accent).~~ Settled: **one shared set for every direction**, in slot order slate-blue, olive, plum, ochre-brown, rose, sky, violet, moss; directions change only their strength (`visual-design.md`).
 - Each colour has three tokens: a **dot / edge** shade, a **pale tint**, and a **dark text** shade that passes AA on the tint.
 - **Where they appear**:
   - **My week**: lesson blocks get a light tint fill of the workspace colour, a stronger 3–4 px left edge in the same hue, and text in the dark shade. The red clash outline sits on top and stays readable.
-  - **Switcher, Coming up, and anywhere else a workspace is named**: a dot only.
+  - **Switcher, My week legend, and anywhere else a workspace is named**: a dot only.
   - **Never** on page backgrounds, buttons, the sidebar or the accent's jobs.
 - The **workspace name is always in the text** next to the colour, so colour blindness doesn't hide which school a lesson belongs to.
 - **Default assignment in a fixed order**: Personal always gets colour 1, and each new workspace takes the next unused colour. This keeps one teacher's colours predictable. The teacher can still change it from the switcher (as already settled).
-- Exact hues: **(prototype)**, after the accent is chosen.
+- Exact hues: **(prototype)**, after the accent is chosen. Settled in `visual-design.md`.
 
 ## Typography
 
-- **One humanist sans for everything**, no second display face by default. Warmth comes from the letterforms. Shortlist: **Figtree** (friendly), **Inter** (neutral), **Source Sans 3** (bookish). Which one: **(prototype)**, varied across directions. Direction A also tests a serif for page titles only.
+- **One humanist sans for everything**, no second display face by default. Warmth comes from the letterforms. Shortlist: **Figtree** (friendly), **Inter** (neutral), **Source Sans 3** (bookish). Which one: **(prototype)**, varied across directions. Direction A also tests a serif for page titles only. Settled: per Appearance (Source Sans 3 with Newsreader page titles / Figtree / Inter).
 - **Tabular figures** for times, dates and hours (18:00, "34 of 60 class hours"), so My week and the class hours bar line up.
 - **Two body sizes by role**:
   - **14 px for UI text**: labels, list rows, cards, table cells, buttons.
@@ -76,11 +76,11 @@ New glossary term from this session: **Workspace colour**.
   - Inputs on phones are at least 16 px anyway, which stops iOS from zooming in on focus.
 - **Small, restrained scale**, roughly 12 / 14 / 16 / 18 / 24 / 30. Page titles are modest (24 px); no hero headings inside the app.
 - **Hierarchy comes from weight and colour** (medium vs regular, ink vs muted grey) more than from size jumps.
-- Exact steps and line heights: fine-tuned in the prototype.
+- Exact steps and line heights: fine-tuned in the prototype. Settled in `visual-design.md`; Notebook's two small steps are 13 / 15 px instead of 12 / 14, because Source Sans 3 reads small.
 
 ## Shape and depth
 
-- **Radius**: 8 px on cards, 6 px on buttons and inputs, fully round only for dots and avatars. Softer than Linear, less bubbly than EdTech. No pill buttons. Directions vary this (12 / 8 / 6 px cards).
+- **Radius**: 8 px on cards, 6 px on buttons and inputs, fully round only for dots and avatars. Softer than Linear, less bubbly than EdTech. No pill buttons. Directions vary this (12 / 8 / 6 px cards). Settled: each Appearance keeps its own radius (`visual-design.md`).
 - **Borders for structure, shadows only for things that float**: 1 px warm-grey hairlines separate cards and sections; one soft shadow level is used only for menus, popovers, dialogs and dragged items. A white card with a hairline on the off-white page is enough to read as a card, and keeping shadows for overlays gives them meaning.
 - **Input borders are darker than card borders** (they must reach 3:1, see Accessibility).
 
@@ -95,7 +95,7 @@ New glossary term from this session: **Workspace colour**.
 
 ## Light and dark mode
 
-- **Light only at launch.** Getting one theme right, with all 8 workspace colours, the semantic colours and the accent passing contrast, matters more than two half-tuned themes. The warm off-white direction is a light-mode idea first.
+- **Light only at launch**, for all three appearances. Getting one theme right, with all 8 workspace colours, the semantic colours and the accent passing contrast, matters more than two half-tuned themes. The warm off-white direction is a light-mode idea first.
 - **Semantic tokens from day one** (`--surface`, `--ink`, `--muted`, `--accent`, `--danger`, per-workspace-colour tokens, and so on, never raw `stone-100` in components), so dark mode is a token swap, not a rewrite.
 - **Dark mode is the first visual follow-up after launch**, not "someday". The product owner wanted both modes at launch and agreed to defer it only on that basis.
 - The prototype renders a **rough dark My week** to prove the 8 workspace colours can work in dark mode (deep, muted fills), so we don't pick hues that are impossible to darken later.
@@ -128,10 +128,12 @@ New glossary term from this session: **Workspace colour**.
 ## Icons, motion, empty states
 
 - **Lucide at 1.5 px stroke** (lighter and calmer next to a humanist sans), 16 px in UI text, 20 px in nav. Icons sit beside labels; icon-only buttons get a tooltip and an accessible label.
-- **Quick, functional motion**: 150–200 ms fades and slides for menus, dialogs, tab changes and items leaving To do. Nothing bouncy, no celebrations, all off under "reduce motion". Motion helps a hurried teacher see what just changed.
+- **Quick, functional motion**: 150–200 ms fades and slides for menus, dialogs, tab changes and items leaving To do. Nothing bouncy, no celebrations, all off under "reduce motion". One quiet touch: marking a report done draws a check in 200 ms (it simply appears under reduce motion). Motion helps a hurried teacher see what just changed.
 - **Text-only empty states**: a muted icon, a short line ("No lessons today") and the next action where there is one. No illustrations or mascots.
 
 ## The three directions to prototype
+
+**Outcome (24 Oct 2026): all three ship.** Each user picks one in their **Appearance** setting; **Notebook** is the default. See `visual-design.md`.
 
 Everything above is shared by all three. Each direction turns the remaining dials (how warm, accent hue, typeface, radius, density lean, workspace palette character) toward a different personality.
 
@@ -171,6 +173,8 @@ Each direction renders the same fixed set with the same fake data. The set is ch
 - **Viewports**: desktop (1440 px) for everything; phone (390 px) for Home and the Report tab, the two "between lessons" screens.
 
 ## Open questions for the prototype
+
+**All answered in `visual-design.md`**, with the reason for each.
 
 - Which direction (Notebook, Studio, Ledger), or which mix of their dials.
 - The accent hue: deep teal, indigo or no-hue ink.

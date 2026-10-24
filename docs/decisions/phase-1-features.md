@@ -83,6 +83,6 @@ Source context: the original project handoff (problem, lesson chain, workspaces,
 - Originally decided to follow the current workspace; superseded: Home now shows the teacher's own to-dos from all their workspaces (see `phase-1-screen-designs.md` and ADR 0008). Three blocks:
   1. **Today**: the teacher's lessons with place/link and whether a plan is attached.
   2. **To do**: lessons with no report, upcoming lessons with no plan, homework to check.
-  3. **Coming up**: short preview linking to My week.
+  3. **Coming up**: short preview linking to My week. Removed on 24 Oct 2026; My week covers the days ahead (see `phase-1-screen-designs.md`).
 - Admins also see classes with no assigned teacher and pending invites.
 - Every to-do is a gap in the lesson chain (plan → lesson → report → assessment).

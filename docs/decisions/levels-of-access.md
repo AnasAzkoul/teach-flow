@@ -64,8 +64,8 @@ Replaces the "agreed for now" version.
 | Screen / action | Teacher | Senior teacher | Admin | Super-admin |
 |---|---|---|---|---|
 | **Home** | | | | |
-| Today, To do, Coming up (own lessons) | ✓ | ✓ | ✓ | ✓ |
-| Blocks: reports overdue, substitute requests, classes ending soon | – | team | school | school |
+| Today, To do (own lessons) | ✓ | ✓ | ✓ | ✓ |
+| Team items in To do: reports overdue, needs a substitute, classes ending soon | – | team | school | school |
 | Send reminder on an overdue report | – | team | ✓ | ✓ |
 | Pending invites block | – | – | ✓ | ✓ |
 | **My week** | | | | |
@@ -107,7 +107,7 @@ Replaces the "agreed for now" version.
 
 - **Timetable changes**: admins, super-admins and senior teachers with Can manage classes change a timetable directly (e.g. a parent phones the school). The assigned teachers get a To do item and an email ("Changed by Sara"). An assigned teacher proposes a change through a **timetable change request**, which a senior teacher with the grant (otherwise an admin) approves or declines.
 - **Availability**: every picker that gives a teacher lessons (assigned teacher, substitute, timetable change) checks the teacher's **availability** in all their workspaces, using the same rule as a clash, including the 30-minute gap between in-person lessons at different places. It checks the exact time slots over the class's whole expected run (class hours ÷ weekly hours), not only lessons already created. Outside its own lessons, a school sees only free or busy, never why (ADR 0006). The picker shows partial availability ("free from 24 Nov", "busy 2 of 28 lessons"). If a partly busy teacher is chosen, the clashing lessons start without a teacher and go through the substitute flow.
-- **Home priority**: a red **Needs a substitute** strip at the very top of a senior teacher's Home (team) and an admin's Home (school), above their own Today. It covers lessons in the next 48 hours with no teacher or an open substitute request, with one-tap Approve or Choose. Later requests stay in the team blocks.
+- **Home priority**: ~~a red **Needs a substitute** strip at the very top of Home~~. Replaced on 24 Oct 2026 (`visual-design.md` review): lessons with no teacher or an open substitute request are team items in To do, with Approve or Choose, and those within 48 hours sort into **Needs action now**. See `phase-1-screen-designs.md`.
 - **No team or school calendar in Phase 1**: availability in the pickers covers the need. A team week view stays parked.
 - **Decision records**: ADR 0006 (availability crosses workspaces as busy/free only; amends 0003) and ADR 0007 (fixed roles and teams; custom roles later).
 
