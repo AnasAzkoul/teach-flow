@@ -40,7 +40,7 @@ watch([dir, screen, todo], () => {
 const win = ref({ w: 1440, h: 900 })
 const width = computed(() => (vp.value === 'phone' ? 390 : 1440))
 const scale = computed(() => Math.min(1, (win.value.w - 32) / width.value))
-const height = computed(() => (vp.value === 'phone' ? 844 : Math.round((win.value.h - 96) / scale.value)))
+const height = computed(() => (vp.value === 'phone' ? Number(route.query.h) || 844 : Math.round((win.value.h - 96) / scale.value)))
 const resize = () => (win.value = { w: window.innerWidth, h: window.innerHeight })
 
 function onKey(e: KeyboardEvent) {

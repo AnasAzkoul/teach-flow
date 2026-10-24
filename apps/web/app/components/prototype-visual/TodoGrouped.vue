@@ -4,12 +4,13 @@ import { computed } from 'vue'
 import { Plus } from '@lucide/vue'
 import { Button } from '@/components/ui/button'
 import TodoRow from './TodoRow.vue'
-import { todoItems, applyFilter, countBy, TYPES, TYPE_ORDER, URGENCY, URGENCY_ORDER, toneText, type TodoFilter } from '~/prototype-visual/todo'
+import { todoItems, applyFilter, countBy, NO_FILTER, TYPES, TYPE_ORDER, URGENCY, URGENCY_ORDER, toneText, type TodoFilter } from '~/prototype-visual/todo'
 
 const filter = defineModel<TodoFilter>('filter', { required: true })
 const shown = computed(() => applyFilter(todoItems, filter.value))
 const byUrgency = computed(() => countBy(applyFilter(todoItems, { ...filter.value, urgency: 'all' }), (i) => i.urgency))
 const byType = computed(() => countBy(applyFilter(todoItems, { ...filter.value, type: 'all' }), (i) => i.type))
+const totalByType = countBy(todoItems, (i) => i.type)
 const chip = (on: boolean) => ['inline-flex h-11 md:h-8 shrink-0 items-center gap-1.5 rounded-control border px-2.5 text-sm font-medium transition-colors', on ? 'border-accent bg-accent-soft text-accent' : 'border-hairline bg-surface text-ink hover:border-field']
 </script>
 
@@ -31,15 +32,15 @@ const chip = (on: boolean) => ['inline-flex h-11 md:h-8 shrink-0 items-center ga
       <div class="-mx-4 flex gap-1.5 overflow-x-auto px-4 md:mx-0 md:flex-wrap md:px-0" role="group" aria-label="Type">
         <button :class="chip(filter.type === 'all')" :aria-pressed="filter.type === 'all'" @click="filter = { ...filter, type: 'all' }">All types</button>
         <template v-for="t in TYPE_ORDER" :key="t">
-          <button v-if="byType[t]" :class="chip(filter.type === t)" :aria-pressed="filter.type === t" @click="filter = { ...filter, type: t }">
+          <button v-if="totalByType[t] || filter.type === t" :class="chip(filter.type === t)" :aria-pressed="filter.type === t" @click="filter = { ...filter, type: t }">
             <component :is="TYPES[t].icon" :class="['size-4 stroke-[1.75]', toneText[TYPES[t].tone]]" />{{ TYPES[t].plural }}
-            <span class="tnum text-muted">{{ byType[t] }}</span>
+            <span class="tnum text-muted">{{ byType[t] ?? 0 }}</span>
           </button>
         </template>
       </div>
     </div>
 
-    <div class="tf-card overflow-hidden">
+    <div class="tf-card @container overflow-hidden">
       <template v-for="u in URGENCY_ORDER" :key="u">
         <template v-if="shown.some((i) => i.urgency === u)">
           <h3 class="flex items-center gap-2 border-b border-hairline bg-sunken/60 px-(--card-pad) py-1.5 text-xs font-semibold text-muted [&:not(:first-child)]:border-t">
@@ -51,7 +52,7 @@ const chip = (on: boolean) => ['inline-flex h-11 md:h-8 shrink-0 items-center ga
           </ul>
         </template>
       </template>
-      <p v-if="!shown.length" class="px-(--card-pad) py-6 text-center text-sm text-muted">Nothing here. <button class="tf-link" @click="filter = { urgency: 'all', type: 'all', scope: 'all' }">Show everything</button></p>
+      <p v-if="!shown.length" class="px-(--card-pad) py-6 text-center text-sm text-muted">Nothing here. <button class="tf-link" @click="filter = { ...NO_FILTER }">Show everything</button></p>
     </div>
   </section>
 </template>
