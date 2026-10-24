@@ -14,6 +14,7 @@ const route = useRoute()
 const router = useRouter()
 const dir = computed(() => (route.query.dir as DirKey) || 'B')
 const screen = computed(() => (route.query.screen as ScreenKey) || 'home')
+const todo = computed(() => (route.query.todo as '1' | '2' | '3') || '1')
 
 useHead({ htmlAttrs: { 'data-dir': dir } })
 
@@ -36,7 +37,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <HomeScreen v-if="screen === 'home'" />
+  <HomeScreen v-if="screen === 'home'" :todo="todo" />
   <LessonScreen v-else-if="screen === 'lesson-plan'" key="plan" tab="plan" />
   <LessonScreen v-else-if="screen === 'lesson-report'" key="report" tab="report" />
   <WeekScreen v-else-if="screen === 'week'" key="week" />

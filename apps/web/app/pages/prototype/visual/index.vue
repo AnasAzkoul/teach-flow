@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // PROTOTYPE: three visual directions (A Notebook, B Studio, C Ledger) for the same settled
 // layouts, switchable via ?dir=, ?screen= and ?vp= and the floating bar. ← / → cycle directions.
+// On Home, ?todo=1|2|3 switches between three designs of the unified To do section.
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { DIRECTIONS, DIR_KEYS, type DirKey } from '~/prototype-visual/tokens'
 import { SCREENS, type ScreenKey } from '~/prototype-visual/screens'
@@ -11,6 +12,16 @@ const router = useRouter()
 
 const dir = computed(() => (route.query.dir as DirKey) || 'B')
 const screen = computed(() => (route.query.screen as ScreenKey) || 'home')
+const todo = computed(() => (route.query.todo as string) || '1')
+const TODO_VARIANTS = [
+  { key: '1', name: 'Grouped' },
+  { key: '2', name: 'Filter rail' },
+  { key: '3', name: 'Triage lanes' },
+]
+function cycleTodo(step: number) {
+  const i = TODO_VARIANTS.findIndex((v) => v.key === todo.value)
+  set({ todo: TODO_VARIANTS[(i + step + 3) % 3]!.key })
+}
 const vp = computed(() => (route.query.vp as 'desktop' | 'phone') || 'desktop')
 const set = (q: Record<string, string>) => router.replace({ query: { ...route.query, ...q } })
 
@@ -20,9 +31,9 @@ function cycle(step: number) {
 }
 
 const frame = ref<HTMLIFrameElement>()
-const initialSrc = `/prototype/visual/frame?dir=${dir.value}&screen=${screen.value}`
-watch([dir, screen], () => {
-  frame.value?.contentWindow?.postMessage({ type: 'proto-state', query: { dir: dir.value, screen: screen.value } }, location.origin)
+const initialSrc = `/prototype/visual/frame?dir=${dir.value}&screen=${screen.value}&todo=${todo.value}`
+watch([dir, screen, todo], () => {
+  frame.value?.contentWindow?.postMessage({ type: 'proto-state', query: { dir: dir.value, screen: screen.value, todo: todo.value } }, location.origin)
 })
 
 // Fit the 1440 px desktop frame into the window by scaling it down.
@@ -74,11 +85,17 @@ onBeforeUnmount(() => {
       <select :value="screen" aria-label="Screen" @change="set({ screen: ($event.target as HTMLSelectElement).value })">
         <option v-for="s in SCREENS" :key="s.key" :value="s.key">{{ s.label }}</option>
       </select>
+      <template v-if="screen === 'home'">
+        <span class="proto-sep" />
+        <button aria-label="Previous To do design" @click="cycleTodo(-1)">‹</button>
+        <span class="proto-label">To do {{ todo }} · {{ TODO_VARIANTS.find((v) => v.key === todo)?.name }}</span>
+        <button aria-label="Next To do design" @click="cycleTodo(1)">›</button>
+      </template>
       <span class="proto-sep" />
       <button :class="{ on: vp === 'desktop' }" @click="set({ vp: 'desktop' })">1440</button>
       <button :class="{ on: vp === 'phone' }" @click="set({ vp: 'phone' })">390</button>
       <span class="proto-sep" />
-      <a :href="`/prototype/visual/frame?dir=${dir}&screen=${screen}`" target="_blank" title="Open the frame on its own">↗</a>
+      <a :href="`/prototype/visual/frame?dir=${dir}&screen=${screen}&todo=${todo}`" target="_blank" title="Open the frame on its own">↗</a>
     </div>
   </div>
 </template>

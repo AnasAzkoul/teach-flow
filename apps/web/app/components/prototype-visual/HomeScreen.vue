@@ -1,49 +1,46 @@
 <script setup lang="ts">
-import { Paperclip, Video, FileText, CircleAlert, Clock, Hourglass, MapPin, Users, ArrowRight, Send, Check, TriangleAlert, Circle, Plus } from '@lucide/vue'
+// Home. The To do section has three candidate designs (?todo=1|2|3); the red Needs a substitute strip
+// and the team Reports overdue block are gone, folded into To do as team items.
+import { ref, computed } from 'vue'
+import { Paperclip, Video, FileText, MapPin, ArrowRight, Clock, ChevronRight } from '@lucide/vue'
+import TodoGrouped from './TodoGrouped.vue'
+import TodoRail from './TodoRail.vue'
+import TodoLanes from './TodoLanes.vue'
+import { todoItems, type TodoFilter } from '~/prototype-visual/todo'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import AppShell from './AppShell.vue'
 import WsDot from './WsDot.vue'
-import { now, needsSubstitute, today, todos, comingUp, teamOverdue, ws } from '~/prototype-visual/data'
+import { now, today, comingUp, ws } from '~/prototype-visual/data'
+
+const props = defineProps<{ todo: '1' | '2' | '3' }>()
+const filter = ref<TodoFilter>({ urgency: 'all', type: 'all', scope: 'all' })
+const subs = todoItems.filter((i) => i.type === 'substitute').length
+const overdue = todoItems.filter((i) => i.type === 'overdue').length
+function jump(type: TodoFilter['type']) {
+  filter.value = { urgency: 'all', type, scope: 'all' }
+  document.getElementById('todo')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+const wide = computed(() => props.todo !== '1')
 
 const actionIcon = { 'Attach plan': Paperclip, 'Open plan': FileText, 'Join meeting': Video, 'Write report': FileText, 'Finish report': FileText }
-const todoStyle = {
-  overdue: { icon: CircleAlert, cls: 'text-danger' },
-  'no-plan': { icon: Clock, cls: 'text-warning' },
-  ending: { icon: Hourglass, cls: 'text-warning' },
-  draft: { icon: FileText, cls: 'text-warning' },
-  'follow-up': { icon: Circle, cls: 'text-muted' },
-} as const
 </script>
 
 <template>
   <AppShell active="home">
-    <!-- Needs a substitute: the only solid-colour fill in the app -->
-    <section class="bg-danger-strong text-danger-on" aria-labelledby="sub-title">
-      <div class="mx-auto max-w-[1120px] px-4 py-3 md:px-8">
-        <h2 id="sub-title" class="flex items-center gap-2 text-sm font-semibold">
-          <TriangleAlert class="size-4 stroke-[1.75]" /> Needs a substitute · Adults &amp; Exams team · next 48 h
-        </h2>
-        <ul class="mt-2 flex flex-col divide-y divide-danger-on/20">
-          <li v-for="s in needsSubstitute" :key="s.id" class="flex flex-col gap-2 py-2 sm:flex-row sm:items-center sm:gap-4">
-            <div class="min-w-0 flex-1 text-sm">
-              <span class="tnum font-semibold">{{ s.when }}</span>
-              <span> · {{ s.klass }} · {{ s.place }}</span>
-              <span class="block opacity-95">{{ s.reason }}<template v-if="s.suggestion"> · {{ s.suggestion }}</template></span>
-            </div>
-            <div class="flex gap-2">
-              <Button v-if="s.action === 'Approve'" size="sm" variant="on-danger"><Check />Approve Lina</Button>
-              <Button size="sm" :variant="s.action === 'Approve' ? 'on-danger-outline' : 'on-danger'">Choose teacher</Button>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
     <div class="mx-auto flex max-w-[1120px] flex-col gap-8 px-4 py-6 md:px-8 md:py-8">
       <header>
         <p class="tnum text-sm text-muted">{{ now.day }} · {{ now.time }}</p>
         <h1 class="page-title">Good morning, Maya</h1>
+        <!-- variant 1 only: a quiet pointer to the urgent team items, no fill -->
+        <p v-if="todo === '1'" class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+          <button class="inline-flex min-h-11 items-center gap-1.5 font-medium text-danger hover:underline md:min-h-0" @click="jump('substitute')">
+            <span class="size-1.5 rounded-full bg-danger" aria-hidden="true" />{{ subs }} lessons need a substitute<ChevronRight class="size-4 stroke-[1.5]" />
+          </button>
+          <button class="inline-flex min-h-11 items-center gap-1.5 font-medium text-danger hover:underline md:min-h-0" @click="jump('overdue')">
+            <span class="size-1.5 rounded-full bg-danger" aria-hidden="true" />{{ overdue }} reports overdue<ChevronRight class="size-4 stroke-[1.5]" />
+          </button>
+        </p>
       </header>
 
       <!-- Today -->
@@ -67,36 +64,15 @@ const todoStyle = {
         </div>
       </section>
 
-      <div class="grid gap-8 lg:grid-cols-[1fr_380px]">
-        <!-- To do -->
-        <section aria-labelledby="todo-title" class="flex flex-col gap-3">
-          <div class="flex items-center justify-between">
-            <h2 id="todo-title" class="section-title">To do <span class="tnum font-normal text-muted">· {{ todos.length }}</span></h2>
-            <Button variant="ghost" size="sm"><Plus />Follow-up</Button>
-          </div>
-          <ul class="tf-card divide-y divide-hairline">
-            <li v-for="t in todos" :key="t.id" class="flex min-h-(--row-h) items-start gap-3 px-(--card-pad) py-2.5">
-              <component :is="todoStyle[t.kind].icon" :class="['mt-0.5 size-4 shrink-0 stroke-[1.75]', todoStyle[t.kind].cls]" :aria-hidden="t.kind !== 'follow-up'" :aria-label="t.kind === 'follow-up' ? 'Tick off' : undefined" />
-              <div class="min-w-0 flex-1">
-                <p class="text-sm">
-                  <span :class="['font-medium', t.kind === 'follow-up' ? 'text-ink' : todoStyle[t.kind].cls]">{{ t.title }}</span>
-                  <span v-if="t.kind !== 'follow-up'" class="text-ink"> · {{ t.detail }}</span>
-                </p>
-                <p class="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs text-muted">
-                  <span v-if="t.kind === 'follow-up'">{{ t.detail }} ·</span>
-                  <WsDot :colour="ws(t.ws).slot" />{{ ws(t.ws).name }} · <span class="tnum">{{ t.meta }}</span>
-                </p>
-              </div>
-              <a v-if="t.kind === 'overdue'" href="#" class="tf-link shrink-0 text-sm">Finish report</a>
-              <a v-else-if="t.kind === 'no-plan'" href="#" class="tf-link shrink-0 text-sm">Attach plan</a>
-            </li>
-          </ul>
-        </section>
+      <div :class="['grid grid-cols-1 gap-8', wide ? '' : 'lg:grid-cols-[minmax(0,1fr)_380px]']">
+        <TodoGrouped v-if="todo === '1'" v-model:filter="filter" />
+        <TodoRail v-else-if="todo === '2'" v-model:filter="filter" />
+        <TodoLanes v-else v-model:filter="filter" />
 
         <!-- Coming up -->
         <section aria-labelledby="coming-title" class="flex flex-col gap-3">
           <h2 id="coming-title" class="section-title">Coming up</h2>
-          <div class="tf-card flex flex-col gap-4 p-(--card-pad)">
+          <div :class="['tf-card gap-4 p-(--card-pad)', wide ? 'grid grid-cols-1 md:grid-cols-4' : 'flex flex-col']">
             <div v-for="d in comingUp" :key="d.day">
               <h3 class="text-xs font-semibold text-muted">{{ d.day }}</h3>
               <ul class="mt-1">
@@ -113,26 +89,6 @@ const todoStyle = {
         </section>
       </div>
 
-      <!-- Team block -->
-      <section aria-labelledby="team-title" class="flex flex-col gap-3 border-t border-hairline pt-6">
-        <h2 id="team-title" class="flex items-center gap-2 text-sm font-semibold">
-          <WsDot :colour="ws(teamOverdue.ws).slot" size="md" />{{ ws(teamOverdue.ws).name }} · {{ teamOverdue.team }} team
-        </h2>
-        <div class="tf-card">
-          <h3 class="flex items-center gap-2 border-b border-hairline px-(--card-pad) py-2.5 text-sm font-semibold">
-            <CircleAlert class="size-4 stroke-[1.75] text-danger" /> Reports overdue <span class="tnum font-normal text-muted">· {{ teamOverdue.rows.length }}</span>
-          </h3>
-          <ul class="divide-y divide-hairline">
-            <li v-for="r in teamOverdue.rows" :key="r.teacher" class="flex min-h-(--row-h) flex-wrap items-center gap-x-4 gap-y-1 px-(--card-pad) py-2">
-              <span class="w-24 text-sm font-medium">{{ r.teacher }}</span>
-              <span class="min-w-0 flex-1 text-sm">{{ r.klass }} <span class="tnum text-muted">· {{ r.lesson }}</span></span>
-              <span class="tnum text-sm text-danger">{{ r.overdue }} overdue</span>
-              <span v-if="r.reminded" class="flex h-8 items-center gap-1 text-xs text-muted"><Check class="size-4 stroke-[1.5]" />Reminded today</span>
-              <Button v-else size="sm" variant="outline"><Send />Send reminder</Button>
-            </li>
-          </ul>
-        </div>
-      </section>
     </div>
   </AppShell>
 </template>
