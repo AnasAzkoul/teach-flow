@@ -2,7 +2,7 @@
 
 Outcome of the levels-of-access grilling session (19 Oct 2026) and its follow-up on the parked items (20–21 Oct 2026). Terms follow `GLOSSARY.md`. This refines the role rules in `phase-1-features.md` and the "agreed for now" Members settings page from the screen-design session; where they differ, this file and the glossary win.
 
-New glossary terms: **Senior teacher**, **Team**, **Plan note**, **Report note**, **Substitute request**, **Renewal recommendation**, and from the follow-up **Timetable change request** and **Availability**. Updated: Member, Teacher (role), Level, Invite, Overdue report.
+New glossary terms: **Senior teacher**, **Team**, **Plan note**, **Report note**, **Substitute request**, **Renewal recommendation**, and from the follow-up **Timetable change request** and **Availability**. Updated: Member, Teacher (role), Level, Invite, Overdue report. The cancellation-rules session (24–25 Oct 2026) split the Move / cancel row and added Workspace rules and Close school; see "Moving, cancelling and ending lessons" below.
 
 ## Shape
 
@@ -82,7 +82,9 @@ Replaces the "agreed for now" version.
 | Edit plan copy | taught | view | ✓ | ✓ |
 | Plan note / report note | – | team | all | all |
 | Write lesson report | taught | view | edit | edit |
-| Move / cancel lesson | own | team | all | all |
+| Move / cancel before the start (teachers only until the move cutoff, default 30 min) | own (assigned) | team | all | all |
+| No-show / ended early (from the start) | taught (incl. substitute) | team | all | all |
+| Restore, edit cancellation | as for the cancel | team | all | all |
 | Substitute request | raise | decide (team) | decide | decide |
 | **Students and portfolio** | | | | |
 | See portfolio | current students | team | all | all |
@@ -102,6 +104,9 @@ Replaces the "agreed for now" version.
 | Grant Can manage classes | – | – | ✓ | ✓ |
 | Remove or demote admins; appoint super-admins | – | – | – | ✓ |
 | Billing, delete workspace | – | – | – | ✓ |
+| **Workspace** | | | | |
+| Workspace rules | view | view | view | ✓ |
+| Close school (cancel many lessons at once) | – | – | ✓ | ✓ |
 
 ## Follow-up decisions (20–21 Oct 2026)
 
@@ -111,7 +116,30 @@ Replaces the "agreed for now" version.
 - **No team or school calendar in Phase 1**: availability in the pickers covers the need. A team week view stays parked.
 - **Decision records**: ADR 0006 (availability crosses workspaces as busy/free only; amends 0003) and ADR 0007 (fixed roles and teams; custom roles later).
 
+## Moving, cancelling and ending lessons (24–25 Oct 2026)
+
+Outcome of the cancellation-rules grilling. Layouts and counting are in `phase-1-screen-designs.md`; terms in the glossary; ADR 0009 covers when counting is fixed.
+
+- **Move**: teachers move their own lessons until the **move cutoff** (a Workspace rule, default 30 min before the start). Senior teachers, admins and super-admins aren't bound by it and can move a lesson until it starts. Nobody moves a lesson that has started. In a personal workspace the teacher is the super-admin, so the cutoff never applies to them.
+- **Before the start**, Move and Cancel belong to the assigned teacher (even while a substitute is set), the senior teacher for the team, and admins. A substitute can't move or cancel ahead.
+- **From the start**, whoever teaches the lesson (including a substitute), the senior teacher and admins record a **no-show** (Cancel, Student) or **Ended early**, until the report is done.
+- **Restore** and **Edit cancellation** go to whoever could cancel the lesson. Restore works until the scheduled start, or until the scheduled end for a no-show.
+- **Close school** (cancel every lesson in a time range on one day) is for admins and super-admins.
+- **Workspace rules**: every member can read them; only super-admins change them. Changes go in the audit history.
+- **Who gets told**: when someone other than the lesson's teacher (the assigned teacher, or the substitute if set) cancels, restores, moves or edits a cancellation, that teacher gets a To do item and an email ("Cancelled by Noura · school closed"). A no-show recorded by a substitute goes to the assigned teacher. Nobody is told about their own changes or about Ended early. Senior teachers and admins see changes through the Cancelled this week block and the audit history.
+
 ### Shaped now, built later
+
+- **Teacher pay rules** (billing phase): Phase 1 only records who taught, who cancelled and which kind, so paid hours can be worked out backwards once built. **Paid hours** = hours taught plus cancelled lessons counted as paid; a substitute gets the paid hours for the lesson they cover. Admins set optional weekly **contracted hours** per teacher on the member row. Principle: a teacher is paid for a cancelled lesson when the class's hours are used for it, so a make-up lesson is never paid twice. Pay rules in Workspace rules (school workspaces only):
+
+  | Rule | Default |
+  |---|---|
+  | Teacher cancellation allowance, for teachers with contracted hours: yes/no + hours per month | no · 2 h |
+  | School cancels: teacher still paid? | no |
+  | Free student cancellation (with notice or within the allowance): paid? | no |
+  | Charged student cancellation: paid? | yes |
+
+  An ended-early lesson pays what the class uses, never less than the time actually taught.
 
 - **Sales role**: sits beside the ladder, not on it. It sees classes ending soon, hours left, renewal recommendations, and the student's contact details, level and goal. It adds hours or records won't renew. It doesn't see lessons, reports, notes or the library. In a school without one, admins do this. The name isn't settled yet. Billing phase.
 - **Renewal recommendations follow the hours**: one per class while hours live on the class; one per student once per-student hour packages arrive.
@@ -122,4 +150,4 @@ Replaces the "agreed for now" version.
 
 - **On-call teacher**: many schools keep a teacher on call to cover for missing teachers. Admins would see who's on call and make them the substitute in one step, or ask others.
 - **Team week view** for senior teachers and admins (rows per teacher, this school's lessons only), as a planning tool.
-- Build of the shaped items above: sales role, per-student renewal recommendations (with per-student hour packages), automated renewal email and online payment, custom roles.
+- Build of the shaped items above: sales role, per-student renewal recommendations (with per-student hour packages), automated renewal email and online payment, custom roles, teacher pay rules and paid hours.

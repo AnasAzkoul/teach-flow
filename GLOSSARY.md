@@ -72,8 +72,12 @@ An assigned teacher's opinion, given when their class is ending soon, on whether
 _Avoid_: Renewal note, sales note
 
 **Hours taught**:
-The hours of a class's lessons that have taken place so far, worked out from those lessons (cancelled lessons don't count). **Hours left** is class hours minus hours taught.
-_Avoid_: Hours used, hours consumed
+The time actually taught in a class's lessons so far: an ended-early lesson counts only up to when it ended, and cancelled lessons never count.
+_Avoid_: Hours consumed, hours used (that is what the class is charged)
+
+**Hours used**:
+The hours taken off a class's class hours: lessons that took place, counted as the workspace rules say (an ended-early lesson may count in full), plus charged cancellations. **Hours left** is class hours minus hours used.
+_Avoid_: Hours charged, hours deducted
 
 **Student**:
 A learner record owned by one workspace, belonging to one or more of that workspace's classes. The same person in two workspaces is two separate students, and students are never copied or moved between workspaces. A student is not a user and has no login.
@@ -140,11 +144,11 @@ A note a senior teacher or admin leaves on a lesson report to guide the teacher,
 _Avoid_: Comment, feedback, participant note (that is the teacher's own observation about a participant)
 
 **Overdue report**:
-A lesson report that is not done (missing or still draft) 24 hours after its lesson ended. Shown to the teacher who taught the lesson, to their senior teacher, and to admins, who can send that teacher a reminder (at most once a day per report).
+A lesson report that is not done (missing or still draft) a set time after its lesson ended (24 hours unless the workspace rules say otherwise). Cancelled lessons never have one. Shown to the teacher who taught the lesson, to their senior teacher, and to admins, who can send that teacher a reminder (at most once a day per report).
 _Avoid_: Late report, missing report (missing is only one way to be overdue)
 
 **Attendance**:
-Whether a participant was present, late, absent (excused) or absent (unexcused) in a lesson that took place. A lesson called off in advance is a cancelled lesson, not an absence.
+Whether a participant was present, late, absent (excused) or absent (unexcused) in a lesson that took place. A lesson called off in advance is a cancelled lesson, not an absence, and a lesson where every participant is absent is a no-show.
 _Avoid_: Presence, check-in
 
 **Homework**:
@@ -220,8 +224,44 @@ The score for one skill tested in an assessment (e.g. Writing 26/40). An assessm
 _Avoid_: Mark, sub-score
 
 **Cancelled lesson**:
-A lesson that did not take place. It stays on record with a reason and who cancelled it (student, teacher or school). A moved lesson is the same lesson with a new date, not a cancellation.
-_Avoid_: Deleted lesson, no-show
+A lesson that did not take place. It stays on record with who cancelled it (student, teacher or school), a reason, and any report it already had. A student cancellation is **with notice**, **late** or a **no-show**, depending on when it was recorded. A moved lesson is the same lesson with a new date, not a cancellation.
+_Avoid_: Deleted lesson
+
+**No-show**:
+A cancellation by the student recorded at or after the lesson's start, including a lesson where every participant was absent.
+_Avoid_: Missed lesson, absence (one absent participant in a lesson that took place is only attendance)
+
+**Cancellation allowance**:
+The hours of student cancellations a class can have without them being taken off its class hours: a share of the class hours (10% unless the workspace rules say otherwise) that grows when hours are added.
+_Avoid_: Free cancellations, credit
+
+**Charged cancellation**:
+A cancellation taken off a class's class hours: a student cancellation beyond the cancellation allowance, or of a kind the workspace rules always take off.
+_Avoid_: Late fee, penalty
+
+**Restore**:
+Undoing a cancellation so the lesson goes ahead as planned, with whatever report it had. The cancellation stays in the audit history.
+_Avoid_: Uncancel, reinstate
+
+**Make-up lesson**:
+A lesson the timetable adds after a class's last lesson because a cancellation or an ended-early lesson left hours unused.
+_Avoid_: Replacement lesson, extra lesson
+
+**Ended early**:
+A lesson that took place but stopped before its scheduled end, recorded with the time it actually ended, who ended it (student, teacher or school) and a reason. It still needs a report.
+_Avoid_: Cut short, cancelled (it took place)
+
+**Workspace rules**:
+A workspace's settings for moving, cancelling and counting lessons (and, in the billing phase, teacher pay). Every member can read them; only super-admins change them, and a change never recounts lessons already recorded.
+_Avoid_: School rules, lesson rules, policy
+
+**Paid hours** (billing phase):
+The hours a teacher is paid for in a school workspace over a week or month: their hours taught plus the cancelled lessons the workspace rules count as paid.
+_Avoid_: Hours worked, payroll hours
+
+**Contracted hours** (billing phase):
+The weekly hours a school expects a particular teacher to teach (e.g. 30 h/week), left empty for teachers paid by the hour.
+_Avoid_: Quota, workload
 
 **My week**:
 A teacher's personal view of every lesson they teach across all their workspaces, showing only lesson basics (time, class, workspace, place), colour-coded by workspace, with clashes highlighted.
