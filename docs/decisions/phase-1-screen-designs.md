@@ -129,8 +129,8 @@ Only the admin-only blocks remain as blocks, below To do, one group per school w
   - **Save draft** and **Mark done** buttons. When every participant is absent (excused or unexcused, nobody present or late), Mark done becomes **Record as cancelled** (see below).
   - The homework check skips cancelled lessons: it shows the homework from the last lesson that took place.
 - **Plan notes and report notes**: a senior teacher (for their team) or an admin can leave a note on the plan copy (or one of its stages) or on the lesson report. The teacher replies and marks it resolved. Only the lesson's teacher, their senior teacher and admins see these notes. Senior teachers don't edit plan copies or reports; admins can still edit reports.
-- **Substitute request**: the lesson's teacher can request a substitute for the lesson and suggest a teacher. It goes to the "Substitute requests" block of their senior teacher, or of admins for a teacher in no team.
-- An overdue report shows in the teacher's own To do, and in the "Reports overdue" block for their senior teacher and admins.
+- **Substitute request**: the lesson's teacher can request a substitute for the lesson and suggest a teacher. It shows as a **Needs a substitute** team item in their senior teacher's To do, or in admins' To do for a teacher in no team.
+- An overdue report shows in the teacher's own To do, and as a **Report overdue** team item in the To do of their senior teacher and admins.
 
 ## Student portfolio
 

@@ -27,7 +27,7 @@ New glossary terms: **Senior teacher**, **Team**, **Plan note**, **Report note**
 
 - **Plan note**: a senior teacher or admin leaves a note on a lesson's plan copy (or one of its stages). The teacher can reply and marks it resolved. Only the lesson's teacher, their senior teacher and admins see it. Senior teachers don't edit plan copies themselves.
 - **Report note**: the same thing on a lesson report. Senior teachers don't edit reports; admins still can.
-- **Overdue reports**: shown to the teacher, to their senior teacher (as a "Reports overdue" block on Home for their team) and to admins (whole school). **Send reminder** emails the teacher and adds "Reminded by X" to that To do item, at most once a day per report. No notification centre is needed.
+- **Overdue reports**: shown to the teacher, to their senior teacher (as a **Report overdue** team item in their To do, for their team) and to admins (whole school, same To do item). Changed 24 Oct 2026: the separate "Reports overdue" block on Home was folded into To do (`phase-1-screen-designs.md`). **Send reminder** emails the teacher and adds "Reminded by X" to that To do item, at most once a day per report. No notification centre is needed.
 
 ## Substitutes
 
